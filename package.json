@@ -5,7 +5,7 @@
   "scripts": {
     "server": "moleculer-runner --repl --hot services/**/*.service.js",
     "client": "npm run dev --prefix client",
-    "db": "npm run start --prefix client",
+    "db": "npm run start --prefix models",
     "dev": "concurrently \"npm run server\" \"npm run db\" \"npm run client\"",
     "start": "moleculer-runner",
     "cli": "moleculer connect NATS",
