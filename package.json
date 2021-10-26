@@ -1,0 +1,48 @@
+{
+  "name": "bt1",
+  "version": "1.0.0",
+  "description": "My Moleculer-based microservices project",
+  "scripts": {
+    "server": "moleculer-runner --repl --hot services/**/*.service.js",
+    "client": "npm run dev --prefix client",
+    "db": "npm run start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run db\" \"npm run client\"",
+    "start": "moleculer-runner",
+    "cli": "moleculer connect NATS",
+    "ci": "jest --watch",
+    "test": "jest --coverage"
+  },
+  "keywords": [
+    "microservices",
+    "moleculer"
+  ],
+  "author": "",
+  "devDependencies": {
+    "@types/node": "^16.11.6",
+    "jest": "^27.1.0",
+    "jest-cli": "^27.1.0",
+    "moleculer-repl": "^0.6.6"
+  },
+  "dependencies": {
+    "concurrently": "^6.3.0",
+    "moleculer": "^0.14.16",
+    "moleculer-db": "^0.8.15",
+    "moleculer-db-adapter-mongo": "^0.4.13",
+    "moleculer-web": "^0.10.2",
+    "mysql": "^2.18.1",
+    "nats": "^2.2.0",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.2.38"
+  },
+  "engines": {
+    "node": ">= 12.x.x"
+  },
+  "jest": {
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node",
+    "rootDir": "./services",
+    "roots": [
+      "../test"
+    ]
+  }
+}
