@@ -1,6 +1,6 @@
 "use strict";
 
-const fs = require("fs");
+// const fs = require("fs");
 const DbService	= require("moleculer-db");
 
 /**
@@ -54,25 +54,25 @@ module.exports = function(collection) {
 		}
 	};
 
-	if (process.env.MONGO_URI) {
-		// Mongo adapter
-		const MongoAdapter = require("moleculer-db-adapter-mongo");
+	// if (process.env.MONGO_URI) {
+	// 	// Mongo adapter
+	// 	const MongoAdapter = require("moleculer-db-adapter-mongo");
 
-		schema.adapter = new MongoAdapter(process.env.MONGO_URI);
-		schema.collection = collection;
-	} else if (process.env.NODE_ENV === 'test') {
-		// NeDB memory adapter for testing
-		schema.adapter = new DbService.MemoryAdapter();
-	} else {
-		// NeDB file DB adapter
+	// 	schema.adapter = new MongoAdapter(process.env.MONGO_URI);
+	// 	schema.collection = collection;
+	// } else if (process.env.NODE_ENV === 'test') {
+	// 	// NeDB memory adapter for testing
+	// 	schema.adapter = new DbService.MemoryAdapter();
+	// } else {
+	// 	// NeDB file DB adapter
 
-		// Create data folder
-		if (!fs.existsSync("./data")) {
-			fs.mkdirSync("./data");
-		}
+	// 	// Create data folder
+	// 	if (!fs.existsSync("./data")) {
+	// 		fs.mkdirSync("./data");
+	// 	}
 
-		schema.adapter = new DbService.MemoryAdapter({ filename: `./data/${collection}.db` });
-	}
+	// 	schema.adapter = new DbService.MemoryAdapter({ filename: `./data/${collection}.db` });
+	// }
 
 	return schema;
 };

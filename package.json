@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "My Moleculer-based microservices project",
   "scripts": {
-    "server": "moleculer-runner --repl --hot services/**/*.service.js",
+    "server": "moleculer-runner --repl --hot models/src/services/**/*.service.js",
     "client": "npm run dev --prefix client",
     "db": "npm run start --prefix models",
     "dev": "concurrently \"npm run server\" \"npm run db\" \"npm run client\"",

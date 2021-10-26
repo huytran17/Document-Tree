@@ -1,6 +1,6 @@
 "use strict";
 
-const DbMixin = require("../mixins/db.mixin");
+// const DbMixin = require("../mixins/db.mixin");
 
 /**
  * @typedef {import('moleculer').Context} Context Moleculer's Context
@@ -13,7 +13,7 @@ module.exports = {
 	/**
 	 * Mixins
 	 */
-	mixins: [DbMixin("products")],
+	// mixins: [DbMixin("products")],
 
 	/**
 	 * Settings
