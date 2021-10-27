@@ -25,7 +25,16 @@ module.exports = {
 	 * Actions
 	 */
 	actions: {
-		
+		hello: {
+			rest: {
+				method: "GET",
+				path: "/hello",
+			},
+
+			async handler() {
+				return "Hello Moleculer";
+			},
+		},
 	},
 
 	/**
@@ -41,15 +50,15 @@ module.exports = {
 	/**
 	 * Service created lifecycle event handler
 	 */
-	created() {},
+	created() { },
 
 	/**
 	 * Service started lifecycle event handler
 	 */
-	async started() {},
+	async started() { },
 
 	/**
 	 * Service stopped lifecycle event handler
 	 */
-	async stopped() {},
+	async stopped() { },
 };

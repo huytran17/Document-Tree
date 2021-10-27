@@ -15,7 +15,7 @@ export class Directory {
 	@PrimaryGeneratedColumn()
 	id: number;
 
-	@Column()
+	@Column("varchar")
 	label: string;
 
 	@ManyToOne((type) => Directory)

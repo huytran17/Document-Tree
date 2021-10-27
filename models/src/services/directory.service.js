@@ -1,6 +1,9 @@
 "use strict";
 
 // const DbMixin = require("../mixins/db.mixin");
+const { DirectoryRepository } = require("../repository")
+const { getRepository } = require('typeorm')
+const { Directory } = require('../entity')
 
 /**
  * @typedef {import('moleculer').Context} Context Moleculer's Context
@@ -9,26 +12,12 @@
 module.exports = {
 	name: "directory",
 
-	// mixins: [DbMixin("directory")],
+	// mixins: [DbMixin("document")],
 
 	/**
 	 * Settings
 	 */
-	settings: {
-		fields: [
-			"_id",
-			"label",
-			"parent",
-			"documents",
-			"createdAt",
-			"updatedAt",
-		],
-		entityValidator: {
-			label: "string|min:1",
-		},
-	},
-
-	hooks: {},
+	settings: {},
 
 	/**
 	 * Dependencies
@@ -39,13 +28,17 @@ module.exports = {
 	 * Actions
 	 */
 	actions: {
-		getAll: {
+		hello: {
 			rest: {
 				method: "GET",
-				path: "/",
+				path: "/hello",
 			},
 
-			async handler() {},
+			async handler() {
+				const directoryRepo = getRepository(Directory);
+
+				return await directoryRepo.find();
+			},
 		},
 	},
 
@@ -62,15 +55,15 @@ module.exports = {
 	/**
 	 * Service created lifecycle event handler
 	 */
-	created() {},
+	created() { },
 
 	/**
 	 * Service started lifecycle event handler
 	 */
-	async started() {},
+	async started() { },
 
 	/**
 	 * Service stopped lifecycle event handler
 	 */
-	async stopped() {},
+	async stopped() { },
 };

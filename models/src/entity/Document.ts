@@ -14,10 +14,10 @@ export class Document {
 	@PrimaryGeneratedColumn()
 	id: number;
 
-	@Column()
+	@Column("varchar")
 	label: string;
 
-	@Column()
+	@Column("text")
 	content: string;
 
 	@ManyToOne((type) => Document)
