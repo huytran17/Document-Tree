@@ -26,7 +26,7 @@
  *  }
  */
 
-const ConnectDB = require('./db/connection')
+const db = require('./config/database')
 
 module.exports = {
 	// Namespace of nodes to segment your nodes on the same network.
@@ -199,8 +199,8 @@ module.exports = {
 	replCommands: null,
 
 	// Called after broker created.
-	created(broker) {
-		ConnectDB();
+	async created(broker) {
+		await db.connect()
 	},
 
 	// Called after broker started.
