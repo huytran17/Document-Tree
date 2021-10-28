@@ -14,5 +14,6 @@
     "element-ui": "^2.15.2",
     "nuxt": "^2.15.7"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "proxy": "localhost:3000"
 }
