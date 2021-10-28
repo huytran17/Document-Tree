@@ -1,40 +1,70 @@
 "use strict";
 
 // const DbMixin = require("../mixins/db.mixin");
-// const { Directory } = require('../../dist/entity')÷
-const Document = require('../models/migrate')
+const Directory = require('../models/Directory')
+const { HttpCode, HttpText } = require('../constants/Http')
 
 module.exports = {
-	name: "directory",
+	name: "directories",
 
 	// mixins: [DbMixin("document")],
 
-	settings: {},
+	settings: {
+		routes: [{
+			alisases: {
+				'GET hello': 'directories.hello',
+				"REST directories": "directories"
+			}
+		}]
+	},
 
 	dependencies: [],
 
 	actions: {
-		hello: {
-			rest: {
-				method: "GET",
-				path: "/hello",
-			},
-
+		list: {
 			async handler() {
 				try {
-					getConnection()
-				} catch {
-					const connection = await createConnection();
-					console.log(connection, '======')
+					const dirs = await Directory.findAll()
+
+					return dirs
 				}
-
-				const userRepo = getConnection().getRepository(Directory)
-
-				const u = userRepo.findOne(1);
-
-				return u;
+				catch (err) {
+					return new Error(err.message)
+				}
 			},
 		},
+
+		get: {
+			async handler(ctx) {
+				try {
+					const dir = await Directory.findOne(ctx.params.id)
+
+					return dir
+				}
+				catch (err) {
+					return new Error(err.message)
+				}
+			}
+		},
+
+		create: {
+			async handler(ctx) {
+				try {
+					const data = ctx.data;
+
+					const dir = await Directory.create({ data })
+
+					return dir
+				}
+				catch (err) {
+					return new Error(err.message)
+				}
+			}
+		},
+
+		update: { async handler() { } },
+
+		remove: { async handler() { } },
 	},
 
 	events: {},
