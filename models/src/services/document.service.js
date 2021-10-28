@@ -1,7 +1,7 @@
 "use strict";
 
-// const DbMixin = require("../mixins/db.mixin");
-
+const { getRepository, getConnection } = require('typeorm')
+const { Directory } = require('../entity')
 /**
  * @typedef {import('moleculer').Context} Context Moleculer's Context
  */
@@ -9,12 +9,12 @@
 module.exports = {
 	name: "document",
 
-	// mixins: [DbMixin("document")],
-
 	/**
 	 * Settings
 	 */
-	settings: {},
+	settings: {
+
+	},
 
 	/**
 	 * Dependencies
@@ -25,6 +25,11 @@ module.exports = {
 	 * Actions
 	 */
 	actions: {
+		/**
+		 * Say a 'Hello' action.
+		 *
+		 * @returns
+		 */
 		hello: {
 			rest: {
 				method: "GET",
@@ -33,6 +38,22 @@ module.exports = {
 
 			async handler() {
 				return "Hello Moleculer";
+			},
+		},
+
+		/**
+		 * Welcome, a username
+		 *
+		 * @param {String} name - User name
+		 */
+		welcome: {
+			rest: "/welcome",
+			params: {
+				name: "string",
+			},
+			/** @param {Context} ctx  */
+			async handler(ctx) {
+				return `Welcome, ${ctx.params.name}`;
 			},
 		},
 	},
