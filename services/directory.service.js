@@ -65,20 +65,22 @@ module.exports = {
 			 */
 			async handler(ctx) {
 				try {
+					const t = await db.transaction()
+
 					const data = ctx.data;
 
 					const dir = await Directory.create(
 						{ data },
 						{
-							transaction: this.metadata.t
+							transaction: t
 						})
 
-					await this.metadata.t.commit()
+					await t.commit()
 
 					return HttpResponse(false, HttpCode.CREATED, HttpText.CREATED, dir)
 				}
 				catch (err) {
-					await this.metadata.t.rollback()
+					await t.rollback()
 				}
 			}
 		},
@@ -94,6 +96,8 @@ module.exports = {
 			 */
 			async handler(ctx) {
 				try {
+					const t = await db.transaction()
+
 					const id = ctx.params.id
 
 					const data = ctx.data;
@@ -102,15 +106,15 @@ module.exports = {
 						{ data },
 						{
 							where: { id: id },
-							transaction: this.metadata.t
+							transaction: t
 						})
 
-					await this.metadata.t.commit()
+					await t.commit()
 
 					return HttpResponse(false, HttpCode.OK, HttpText.OK, dir)
 				}
 				catch (err) {
-					await this.metadata.t.rollback()
+					await t.rollback()
 				}
 			}
 		},
@@ -126,20 +130,22 @@ module.exports = {
 			 */
 			async handler(ctx) {
 				try {
+					const t = await db.transaction()
+
 					const id = ctx.params.id
 
 					const dir = await Directory.destroy(
 						{
 							where: { id },
-							transaction: this.metadata.t
+							transaction: t
 						})
 
-					await this.metadata.t.commit()
+					await t.commit()
 
 					return HttpResponse(false, HttpCode.OK, HttpText.OK, dir)
 				}
 				catch (err) {
-					await this.metadata.t.rollback()
+					await t.rollback()
 				}
 			}
 		},

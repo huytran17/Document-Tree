@@ -16,10 +16,6 @@ module.exports = {
 		}]
 	},
 
-	metadata: {
-		t: async () => await db.transaction()
-	},
-
 	actions: {
 		list: {
 			async handler(ctx) {
@@ -56,20 +52,22 @@ module.exports = {
 		create: {
 			async handler(ctx) {
 				try {
+					const t = await db.transaction()
+
 					const data = ctx.data
 
 					const doc = await Document.create(
 						{ data },
 						{
-							transaction: this.metadata.t
+							transaction: t
 						})
 
-					await this.metadata.t.commit()
+					await t.commit()
 
 					return HttpResponse(false, HttpCode.CREATED, HttpText.CREATED, doc)
 				}
 				catch (err) {
-					await this.metadata.t.rollback()
+					await t.rollback()
 				}
 			}
 		},
@@ -81,6 +79,8 @@ module.exports = {
 
 			async handler(ctx) {
 				try {
+					const t = await db.transaction()
+
 					const id = ctx.data.id
 
 					const data = ctx.data
@@ -89,15 +89,15 @@ module.exports = {
 						{ data },
 						{
 							where: { id },
-							transaction: this.metadata.t
+							transaction: t
 						})
 
-					await this.metadata.t.commit()
+					await t.commit()
 
 					return HttpResponse(false, HttpCode.OK, HttpText.OK, doc)
 				}
 				catch (err) {
-					await this.metadata.t.rollback()
+					await t.rollback()
 				}
 			}
 		},
@@ -109,20 +109,22 @@ module.exports = {
 
 			async handler(ctx) {
 				try {
+					const t = await db.transaction()
+
 					const id = ctx.data.id
 
 					const doc = await Document.destroy(
 						{
 							where: { id: id },
-							transaction: this.metadata.t
+							transaction: t
 						})
 
-					await this.metadata.t.commit()
+					await t.commit()
 
 					return HttpResponse(false, HttpCode.OK, HttpText.OK, doc)
 				}
 				catch (err) {
-					await this.metadata.t.rollback()
+					await t.rollback()
 				}
 			}
 		}
