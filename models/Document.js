@@ -30,7 +30,7 @@ const fields = {
             model: Directory,
             key: 'id'
         },
-        allowNull: true,
+        allowNull: false,
     }
 }
 
