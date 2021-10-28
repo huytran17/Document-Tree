@@ -25,6 +25,9 @@
  *    }
  *  }
  */
+
+const ConnectDB = require('./db/connection')
+
 module.exports = {
 	// Namespace of nodes to segment your nodes on the same network.
 	namespace: "",
@@ -197,7 +200,8 @@ module.exports = {
 
 	// Called after broker created.
 	created(broker) {
-
+		console.log('created');
+		ConnectDB();
 	},
 
 	// Called after broker started.

@@ -1,4 +1,6 @@
-const env = require('dotenv').config();
+require('dotenv').config();
+
+const env = process.env;
 
 module.exports.DB = Object.freeze({
     DATABASE_HOST: env.DATABASE_HOST,

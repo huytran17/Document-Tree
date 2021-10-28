@@ -1,7 +1,5 @@
 "use strict";
 
-const { getRepository, getConnection } = require('typeorm')
-const { Directory } = require('../models/src/entity')
 /**
  * @typedef {import('moleculer').Context} Context Moleculer's Context
  */

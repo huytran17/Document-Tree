@@ -1,9 +1,6 @@
 "use strict";
 
 // const DbMixin = require("../mixins/db.mixin");
-require("reflect-metadata")
-const { getRepository, getConnection, createConnection } = require('typeorm')
-const { Directory } = require('../models/src/entity')
 // const { Directory } = require('../../dist/entity')÷
 
 module.exports = {
