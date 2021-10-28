@@ -27,6 +27,7 @@
  */
 
 const db = require('./config/database')
+const migrate = require('./models')
 
 module.exports = {
 	// Namespace of nodes to segment your nodes on the same network.
@@ -201,6 +202,7 @@ module.exports = {
 	// Called after broker created.
 	async created(broker) {
 		await db.connect()
+		await migrate()
 	},
 
 	// Called after broker started.

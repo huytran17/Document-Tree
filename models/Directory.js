@@ -1,14 +1,30 @@
-const { Sequelize, DataTypes, Model } = require('sequelize');
-const sequelize = require('../db/database')
+const { DataTypes, Model, Sequelize } = require('sequelize');
+const db = require('../config/database')
+const sequelize = db.sequelize()
 
 class Directory extends Model { }
 
-Directory.init({
+const fields = {
     label: {
-        type: DataTypes.String,
+        field: 'label',
+        type: Sequelize.STRING,
         allowNull: false
     },
-    parent_id: {
-        
-    }
-})
+    parentId: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: Directory,
+            key: 'id'
+        },
+        allowNull: true,
+    },
+
+}
+
+Directory.init(
+    fields
+    , {
+        sequelize, timestamps: true, modelName: 'directory',
+    })
+
+module.exports = Directory;
