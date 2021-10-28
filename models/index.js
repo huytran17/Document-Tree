@@ -2,6 +2,8 @@ const Directory = require('./Directory')
 const Document = require('./Document')
 
 Directory.hasMany(Document, { onDelete: 'cascade' });
+Directory.hasMany(Directory, { onDelete: 'cascade' });
+Document.hasMany(Document, { onDelete: 'cascade' });
 
 module.exports = async () => {
     try {
