@@ -31,6 +31,12 @@ class Database {
     sequelize() {
         return this._sequelize
     }
+
+    async transaction() {
+        const t = await sequelize.transaction()
+
+        return t
+    }
 }
 
 const db = new Database()

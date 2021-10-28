@@ -3,6 +3,7 @@
 const Directory = require('../models/Directory')
 const { HttpCode, HttpText } = require('../constants/Http')
 const HttpResponse = require('../utils/HttpResponse')
+const db = require('../config/database')
 
 module.exports = {
 	name: "directories",
@@ -15,7 +16,9 @@ module.exports = {
 		}]
 	},
 
-	dependencies: [],
+	metadata: {
+		t: async () => await db.transaction()
+	},
 
 	actions: {
 		list: {
@@ -44,7 +47,7 @@ module.exports = {
 				try {
 					const id = ctx.params.id
 
-					const dir = await Directory.findOne(id)
+					const dir = await Directory.findOne({ where: { id } })
 
 					return HttpResponse(false, HttpCode.OK, HttpText.OK, dir)
 				}
@@ -64,12 +67,18 @@ module.exports = {
 				try {
 					const data = ctx.data;
 
-					const dir = await Directory.create({ data })
+					const dir = await Directory.create(
+						{ data },
+						{
+							transaction: this.metadata.t
+						})
+
+					await this.metadata.t.commit()
 
 					return HttpResponse(false, HttpCode.CREATED, HttpText.CREATED, dir)
 				}
 				catch (err) {
-					return new Error(err.message)
+					await this.metadata.t.rollback()
 				}
 			}
 		},
@@ -89,12 +98,19 @@ module.exports = {
 
 					const data = ctx.data;
 
-					const dir = await Directory.update({ data }, { where: { id: id } })
+					const dir = await Directory.update(
+						{ data },
+						{
+							where: { id: id },
+							transaction: this.metadata.t
+						})
+
+					await this.metadata.t.commit()
 
 					return HttpResponse(false, HttpCode.OK, HttpText.OK, dir)
 				}
 				catch (err) {
-					return new Error(err.message)
+					await this.metadata.t.rollback()
 				}
 			}
 		},
@@ -112,12 +128,18 @@ module.exports = {
 				try {
 					const id = ctx.params.id
 
-					const dir = await Directory.destroy({ where: { id: id } })
+					const dir = await Directory.destroy(
+						{
+							where: { id },
+							transaction: this.metadata.t
+						})
+
+					await this.metadata.t.commit()
 
 					return HttpResponse(false, HttpCode.OK, HttpText.OK, dir)
 				}
 				catch (err) {
-					return new Error(err.message)
+					await this.metadata.t.rollback()
 				}
 			}
 		},
@@ -125,7 +147,9 @@ module.exports = {
 
 	events: {},
 
-	methods: {},
+	methods: {
+
+	},
 
 	created() { },
 

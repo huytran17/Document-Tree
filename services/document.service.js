@@ -3,6 +3,7 @@
 const Document = require('../models/Document')
 const { HttpCode, HttpText } = require('../constants/Http')
 const HttpResponse = require('../utils/HttpResponse')
+const db = require('../config/database')
 
 module.exports = {
 	name: "documents",
@@ -15,7 +16,9 @@ module.exports = {
 		}]
 	},
 
-	dependencies: [],
+	metadata: {
+		t: async () => await db.transaction()
+	},
 
 	actions: {
 		list: {
@@ -40,7 +43,7 @@ module.exports = {
 				try {
 					const id = ctx.params.id
 
-					const doc = await Document.findOne(id)
+					const doc = await Document.findOne({ where: { id } })
 
 					return HttpResponse(false, HttpCode.OK, HttpText.OK, doc)
 				}
@@ -55,12 +58,18 @@ module.exports = {
 				try {
 					const data = ctx.data
 
-					const doc = await Document.create({ data })
+					const doc = await Document.create(
+						{ data },
+						{
+							transaction: this.metadata.t
+						})
+
+					await this.metadata.t.commit()
 
 					return HttpResponse(false, HttpCode.CREATED, HttpText.CREATED, doc)
 				}
 				catch (err) {
-					return new Error(err.message)
+					await this.metadata.t.rollback()
 				}
 			}
 		},
@@ -76,12 +85,19 @@ module.exports = {
 
 					const data = ctx.data
 
-					const doc = await Document.create({ data }, { where: { id: id } })
+					const doc = await Document.create(
+						{ data },
+						{
+							where: { id },
+							transaction: this.metadata.t
+						})
+
+					await this.metadata.t.commit()
 
 					return HttpResponse(false, HttpCode.OK, HttpText.OK, doc)
 				}
 				catch (err) {
-					return new Error(err.message)
+					await this.metadata.t.rollback()
 				}
 			}
 		},
@@ -95,12 +111,18 @@ module.exports = {
 				try {
 					const id = ctx.data.id
 
-					const doc = await Document.destroy({ where: { id: id } })
+					const doc = await Document.destroy(
+						{
+							where: { id: id },
+							transaction: this.metadata.t
+						})
+
+					await this.metadata.t.commit()
 
 					return HttpResponse(false, HttpCode.OK, HttpText.OK, doc)
 				}
 				catch (err) {
-					return new Error(err.message)
+					await this.metadata.t.rollback()
 				}
 			}
 		}
