@@ -27,7 +27,7 @@
  */
 
 const db = require('./config/database')
-const migrate = require('./models')
+const migrate = require('./models/migrate')
 
 module.exports = {
 	// Namespace of nodes to segment your nodes on the same network.

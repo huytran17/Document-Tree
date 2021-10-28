@@ -2,6 +2,7 @@
 
 // const DbMixin = require("../mixins/db.mixin");
 // const { Directory } = require('../../dist/entity')÷
+const Document = require('../models/migrate')
 
 module.exports = {
 	name: "directory",
