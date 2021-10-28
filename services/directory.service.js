@@ -3,6 +3,7 @@
 // const DbMixin = require("../mixins/db.mixin");
 const Directory = require('../models/Directory')
 const { HttpCode, HttpText } = require('../constants/Http')
+const HttpResponse = require('../utils/HttpResponse')
 
 module.exports = {
 	name: "directories",
@@ -26,7 +27,7 @@ module.exports = {
 				try {
 					const dirs = await Directory.findAll()
 
-					return dirs
+					return HttpResponse(false, HttpCode.OK, HttpText.OK, dirs)
 				}
 				catch (err) {
 					return new Error(err.message)
@@ -35,11 +36,15 @@ module.exports = {
 		},
 
 		get: {
+			params: {
+				id: "string"
+			},
+
 			async handler(ctx) {
 				try {
 					const dir = await Directory.findOne(ctx.params.id)
 
-					return dir
+					return HttpResponse(false, HttpCode.OK, HttpText.OK, dir)
 				}
 				catch (err) {
 					return new Error(err.message)
@@ -54,7 +59,7 @@ module.exports = {
 
 					const dir = await Directory.create({ data })
 
-					return dir
+					return HttpResponse(false, HttpCode.CREATED, HttpText.CREATED, dir)
 				}
 				catch (err) {
 					return new Error(err.message)
@@ -62,9 +67,45 @@ module.exports = {
 			}
 		},
 
-		update: { async handler() { } },
+		update: {
+			params: {
+				id: "string"
+			},
 
-		remove: { async handler() { } },
+			async handler(ctx) {
+				try {
+					const id = ctx.params.id
+
+					const data = ctx.data;
+
+					const dir = await Directory.update({ data }, { where: { id: id } })
+
+					return HttpResponse(false, HttpCode.OK, HttpText.OK, dir)
+				}
+				catch (err) {
+					return new Error(err.message)
+				}
+			}
+		},
+
+		remove: {
+			params: {
+				id: "string"
+			},
+			
+			async handler(ctx) {
+				try {
+					const id = ctx.params.id
+
+					const dir = await Directory.destroy({ where: { id: id } })
+
+					return HttpResponse(false, HttpCode.OK, HttpText.OK, dir)
+				}
+				catch (err) {
+					return new Error(err.message)
+				}
+			}
+		},
 	},
 
 	events: {},
