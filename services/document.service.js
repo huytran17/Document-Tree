@@ -1,83 +1,118 @@
 "use strict";
 
-/**
- * @typedef {import('moleculer').Context} Context Moleculer's Context
- */
+const Document = require('../models/Document')
+const { HttpCode, HttpText } = require('../constants/Http')
+const HttpResponse = require('../utils/HttpResponse')
 
 module.exports = {
-	name: "document",
+	name: "documents",
 
-	/**
-	 * Settings
-	 */
 	settings: {
-
+		routes: [{
+			alisases: {
+				"REST documents": "documents"
+			}
+		}]
 	},
 
-	/**
-	 * Dependencies
-	 */
 	dependencies: [],
 
-	/**
-	 * Actions
-	 */
 	actions: {
-		/**
-		 * Say a 'Hello' action.
-		 *
-		 * @returns
-		 */
-		hello: {
-			rest: {
-				method: "GET",
-				path: "/hello",
-			},
-
-			async handler() {
-				return "Hello Moleculer";
-			},
-		},
-
-		/**
-		 * Welcome, a username
-		 *
-		 * @param {String} name - User name
-		 */
-		welcome: {
-			rest: "/welcome",
-			params: {
-				name: "string",
-			},
-			/** @param {Context} ctx  */
+		list: {
 			async handler(ctx) {
-				return `Welcome, ${ctx.params.name}`;
-			},
+				try {
+					const docs = await Document.findAll()
+
+					return HttpResponse(false, HttpCode.OK, HttpText.OK, docs)
+				}
+				catch (err) {
+					return new Error(err.message)
+				}
+			}
 		},
+
+		get: {
+			params: {
+				id: "string",
+			},
+
+			async handler(ctx) {
+				try {
+					const id = ctx.params.id
+
+					const doc = await Document.findOne(id)
+
+					return HttpResponse(false, HttpCode.OK, HttpText.OK, doc)
+				}
+				catch (err) {
+					return new Error(err.message)
+				}
+			}
+		},
+
+		create: {
+			async handler(ctx) {
+				try {
+					const data = ctx.data
+
+					const doc = await Document.create({ data })
+
+					return HttpResponse(false, HttpCode.CREATED, HttpText.CREATED, doc)
+				}
+				catch (err) {
+					return new Error(err.message)
+				}
+			}
+		},
+
+		update: {
+			params: {
+				id: "string"
+			},
+
+			async handler(ctx) {
+				try {
+					const id = ctx.data.id
+
+					const data = ctx.data
+
+					const doc = await Document.create({ data }, { where: { id: id } })
+
+					return HttpResponse(false, HttpCode.OK, HttpText.OK, doc)
+				}
+				catch (err) {
+					return new Error(err.message)
+				}
+			}
+		},
+
+		remove: {
+			params: {
+				id: "string"
+			},
+
+			async handler(ctx) {
+				try {
+					const id = ctx.data.id
+
+					const doc = await Document.destroy({ where: { id: id } })
+
+					return HttpResponse(false, HttpCode.OK, HttpText.OK, doc)
+				}
+				catch (err) {
+					return new Error(err.message)
+				}
+			}
+		}
 	},
 
-	/**
-	 * Events
-	 */
 	events: {},
 
-	/**
-	 * Methods
-	 */
 	methods: {},
 
-	/**
-	 * Service created lifecycle event handler
-	 */
 	created() { },
 
-	/**
-	 * Service started lifecycle event handler
-	 */
 	async started() { },
 
-	/**
-	 * Service stopped lifecycle event handler
-	 */
 	async stopped() { },
 };

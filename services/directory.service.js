@@ -1,6 +1,5 @@
 "use strict";
 
-// const DbMixin = require("../mixins/db.mixin");
 const Directory = require('../models/Directory')
 const { HttpCode, HttpText } = require('../constants/Http')
 const HttpResponse = require('../utils/HttpResponse')
@@ -8,12 +7,9 @@ const HttpResponse = require('../utils/HttpResponse')
 module.exports = {
 	name: "directories",
 
-	// mixins: [DbMixin("document")],
-
 	settings: {
 		routes: [{
 			alisases: {
-				'GET hello': 'directories.hello',
 				"REST directories": "directories"
 			}
 		}]
@@ -39,10 +35,16 @@ module.exports = {
 			params: {
 				id: "string"
 			},
-
+			/**
+			 * 
+			 * @param {Context} ctx 
+			 * @returns all directories || errors
+			 */
 			async handler(ctx) {
 				try {
-					const dir = await Directory.findOne(ctx.params.id)
+					const id = ctx.params.id
+
+					const dir = await Directory.findOne(id)
 
 					return HttpResponse(false, HttpCode.OK, HttpText.OK, dir)
 				}
@@ -53,6 +55,11 @@ module.exports = {
 		},
 
 		create: {
+			/**
+			 * 
+			 * @param {Context} ctx 
+			 * @returns inserted directory || errors
+			 */
 			async handler(ctx) {
 				try {
 					const data = ctx.data;
@@ -71,7 +78,11 @@ module.exports = {
 			params: {
 				id: "string"
 			},
-
+			/**
+			 * 
+			 * @param {Context} ctx 
+			 * @returns updated directory || errors
+			 */
 			async handler(ctx) {
 				try {
 					const id = ctx.params.id
@@ -92,7 +103,11 @@ module.exports = {
 			params: {
 				id: "string"
 			},
-			
+			/**
+			 * 
+			 * @param {Context} ctx 
+			 * @returns removed directory || errors
+			 */
 			async handler(ctx) {
 				try {
 					const id = ctx.params.id
