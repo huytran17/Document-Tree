@@ -40,13 +40,20 @@ export default {
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
+  axios: {
+    baseURL: "http://localhost:3000",
+    proxy: true,
+  },
+
+  proxy: {
+    '/api/': 'http://localhost:3000'
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     transpile: [/^element-ui/],
   },
-  
+
   server: {
     port: 8000 // default: 3000
   }

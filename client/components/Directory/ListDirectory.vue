@@ -16,6 +16,7 @@
       :render-content="renderContent"
       @node-click="handleNodeClick"
       ref="tree"
+      children="directories"
     ></el-tree>
     <Dialog title="Chú ý">
       <span slot="message">
@@ -49,12 +50,8 @@ export default {
     this.$nuxt.$on(Event.CREATE_SUBDIR, (data) => {
       this.$refs.tree.setCurrentKey(data.node.id);
       data.node.expanded = true;
-
-      const InputNode = (
-        <TreeNode data={data.data} node={data.node}>
-          <span>hello</span>
-        </TreeNode>
-      );
+      //TODO: thêm ô input khi tạo folder con
+      const InputNode = <TreeNode data={data.data} node={data.node}></TreeNode>;
 
       if (!data.data.children) {
         this.$set(data.data, "children", []);

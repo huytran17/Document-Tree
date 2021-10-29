@@ -1,4 +1,4 @@
-const { DataTypes, Model, Sequelize } = require('sequelize');
+const { Model, Sequelize } = require('sequelize');
 const db = require('../config/database')
 const sequelize = db.sequelize()
 
@@ -10,15 +10,6 @@ const fields = {
         type: Sequelize.STRING,
         allowNull: false
     },
-    parentId: {
-        type: DataTypes.INTEGER,
-        references: {
-            model: Directory,
-            key: 'id'
-        },
-        allowNull: true,
-    },
-
 }
 
 Directory.init(

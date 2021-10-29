@@ -9,7 +9,7 @@
       </el-col>
       <el-col :span="24" class="col2">
         <ListDirectory
-          :data="dirs"
+          :data="nodes"
           :inputMkdir="inputMkdir"
           :isCreate="isCreate"
         ></ListDirectory>
@@ -29,43 +29,46 @@ export default {
   },
   data() {
     return {
-      dirs: [
-        {
-          id: 1,
-          label: "A",
-          children: [
-            {
-              id: 2,
-              label: "B",
-            },
-            {
-              id: 3,
-              label: "C",
-              children: [
-                {
-                  id: 4,
-                  label: "D",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          id: 5,
-          label: "E",
-          children: [],
-        },
-      ],
+      dirs: [],
       inputMkdir: "",
       isCreate: false,
+      nodes: [],
     };
   },
   methods: {
     createFolder() {
       this.isCreate = !this.isCreate;
     },
+
+    getRootNodes() {
+      for (var i = 0; i < this.dirs.length; i++) {
+        if (!this.dirs[i].directoryId) {
+          this.nodes.push(this.dirs[i]);
+          this.dirs.splice(i, 1);
+          --i;
+        }
+      }
+    },
+
+    recursiveTree(nodes, search) {
+      if (nodes.length === 0) return null;
+
+      nodes.forEach((par) => {
+        par.children = [];
+
+        for (var i = 0; i < search.length; i++) {
+          if (search[i].directoryId === par.id) {
+            par.children.push(search[i]);
+            search.splice(i, 1);
+            --i;
+          }
+        }
+
+        return this.recursiveTree(par.children, search);
+      });
+    },
   },
-  created() {
+  async created() {
     this.$nuxt.$on(Event.CREATE_DIR, (data) => {
       // const dir = {
       //   id: 65,
@@ -76,6 +79,14 @@ export default {
 
       console.log(data);
     });
+
+    await this.$axios
+      .$get("http://localhost:3000/api/directories/list")
+      .then(async (res) => {
+        this.dirs = res.data;
+        this.getRootNodes();
+        this.recursiveTree(this.nodes, this.dirs);
+      });
   },
 };
 </script>

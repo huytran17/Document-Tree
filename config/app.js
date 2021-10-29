@@ -14,3 +14,7 @@ module.exports.DB = Object.freeze({
     DATABASE_ACQUIRE: env.DATABASE_ACQUIRE || 30000,
     DATABASE_IDLE: env.DATABASE_IDLE || 10000
 })
+
+module.exports.APP = Object.freeze({
+    BASE_URL: env.BASE_URL || "http://localhost:3000"
+})
