@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-input
-      placeholder="Type something"
+      placeholder="Thư mục mới"
       v-model="inputMkdir"
       v-if="isCreate"
       autofocus
@@ -14,6 +14,8 @@
       :highlight-current="true"
       node-key="id"
       :render-content="renderContent"
+      @node-click="handleNodeClick"
+      ref="tree"
     ></el-tree>
     <Dialog title="Chú ý">
       <span slot="message">
@@ -27,6 +29,8 @@
 <script>
 import Dropdown from "./Dropdown";
 import Dialog from "../Global/Dialog";
+import TreeNode from "./TreeNode";
+import Vue from "Vue";
 import { Event } from "../../constants/event";
 
 export default {
@@ -41,21 +45,52 @@ export default {
       inputMkdir: "",
     };
   },
-  methods: {
-    renderContent(h, { node, data, store }) {
-      return (
-        <span class="custom-tree-node" data-id={node.id}>
-          <i class="el-icon-folder" style="color: #f1d821"></i>
-          <span style="margin-left: 5px">{node.label}</span>
-          <Dropdown />
-        </span>
+  created() {
+    this.$nuxt.$on(Event.CREATE_SUBDIR, (data) => {
+      this.$refs.tree.setCurrentKey(data.node.id);
+      data.node.expanded = true;
+
+      const InputNode = (
+        <TreeNode data={data.data} node={data.node}>
+          <span>hello</span>
+        </TreeNode>
       );
+
+      if (!data.data.children) {
+        this.$set(data.data, "children", []);
+      }
+
+      data.data.children.unshift(InputNode);
+
+      console.log(InputNode);
+    });
+  },
+  methods: {
+    handleNodeClick(data) {
+      console.log(data.label);
     },
+
+    renderContent(h, { node, data, store }) {
+      return <TreeNode data={data} node={node}></TreeNode>;
+    },
+
+    handleCommend(command) {
+      console.log(command);
+    },
+
     handleBlur() {
-      this.$nuxt.$emit("open-global-dialog", {
+      this.$nuxt.$emit(Event.OPEN_GLOBAL_DIALOG, {
         dialogEvent: Event.CREATE_DIR,
         dialogData: this.inputMkdir,
       });
+    },
+
+    append(data) {
+      const newChild = { id: 100, label: "testtest", children: [] };
+      if (!data.children) {
+        this.$set(data, "children", []);
+      }
+      data.children.unshift(newChild);
     },
   },
 };

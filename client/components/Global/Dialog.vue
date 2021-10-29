@@ -1,6 +1,6 @@
 <template>
   <el-dialog :title="title" :visible.sync="dialogVisible" width="30%">
-    <slot name="message"> This is a message </slot>
+    <slot name="message">This is a message </slot>
     <span slot="footer" class="dialog-footer">
       <el-button @click="dialogVisible = false">
         <slot name="cancelText">Hủy</slot>
@@ -13,6 +13,8 @@
 </template>
 
 <script>
+import { Event } from "../../constants/event";
+
 export default {
   name: "GlobalDialog",
   props: ["title", "eventType"],
@@ -23,13 +25,15 @@ export default {
       dialogData: null,
     };
   },
+
   created() {
-    this.$nuxt.$on("open-global-dialog", (data) => {
+    this.$nuxt.$on(Event.OPEN_GLOBAL_DIALOG, (data) => {
       this.dialogVisible = true;
       this.dialogEvent = data.dialogEvent;
       this.dialogData = data.dialogData;
     });
   },
+
   methods: {
     triggerCreateDir() {
       this.dialogVisible = false;
