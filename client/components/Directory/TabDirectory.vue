@@ -67,26 +67,36 @@ export default {
         return this.recursiveTree(par.children, search);
       });
     },
-  },
-  async created() {
-    this.$nuxt.$on(Event.CREATE_DIR, (data) => {
-      // const dir = {
-      //   id: 65,
-      //   label: data,
-      // };
-      // this.dirs.unshift(dir);
-      //TODO: gọi api thêm dir
 
-      console.log(data);
+    async fetchDirs() {
+      await this.$axios
+        .$get("http://localhost:3000/api/directories/list")
+        .then((res) => {
+          this.dirs = res.data;
+          this.nodes = [];
+          this.isCreate = false;
+          this.getRootNodes();
+          this.recursiveTree(this.nodes, this.dirs);
+        });
+    },
+  },
+
+  async created() {
+    await this.fetchDirs();
+
+    this.$nuxt.$on(Event.CREATE_DIR, async (data) => {
+      await this.$axios
+        .$post("http://localhost:3000/api/directories/create", {
+          ...data,
+        })
+        .then(async (res) => {
+          await this.fetchDirs();
+        });
     });
 
-    await this.$axios
-      .$get("http://localhost:3000/api/directories/list")
-      .then(async (res) => {
-        this.dirs = res.data;
-        this.getRootNodes();
-        this.recursiveTree(this.nodes, this.dirs);
-      });
+    this.$nuxt.$on(Event.CLOSE_GLOBAL_DIALOG, () => {
+      this.isCreate = false;
+    });
   },
 };
 </script>

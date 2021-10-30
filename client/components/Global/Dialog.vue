@@ -2,7 +2,7 @@
   <el-dialog :title="title" :visible.sync="dialogVisible" width="30%">
     <slot name="message">This is a message </slot>
     <span slot="footer" class="dialog-footer">
-      <el-button @click="dialogVisible = false">
+      <el-button @click="onCloseDialog">
         <slot name="cancelText">Hủy</slot>
       </el-button>
       <el-button type="primary" @click="triggerCreateDir">
@@ -38,6 +38,11 @@ export default {
     triggerCreateDir() {
       this.dialogVisible = false;
       this.$nuxt.$emit(this.dialogEvent, this.dialogData);
+    },
+
+    onCloseDialog() {
+      this.dialogVisible = false;
+      this.$nuxt.$emit(Event.CLOSE_GLOBAL_DIALOG);
     },
   },
 };

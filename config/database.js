@@ -33,7 +33,7 @@ class Database {
     }
 
     async transaction() {
-        const t = await sequelize.transaction()
+        const t = await this._sequelize.transaction()
 
         return t
     }

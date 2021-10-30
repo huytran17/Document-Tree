@@ -15,7 +15,6 @@
       node-key="id"
       :render-content="renderContent"
       @node-click="handleNodeClick"
-      ref="tree"
       children="directories"
     ></el-tree>
     <Dialog title="Chú ý">
@@ -48,18 +47,7 @@ export default {
   },
   created() {
     this.$nuxt.$on(Event.CREATE_SUBDIR, (data) => {
-      this.$refs.tree.setCurrentKey(data.node.id);
-      data.node.expanded = true;
-      //TODO: thêm ô input khi tạo folder con
-      const InputNode = <TreeNode data={data.data} node={data.node}></TreeNode>;
-
-      if (!data.data.children) {
-        this.$set(data.data, "children", []);
-      }
-
-      data.data.children.unshift(InputNode);
-
-      console.log(InputNode);
+     //TODO
     });
   },
   methods: {
@@ -71,14 +59,16 @@ export default {
       return <TreeNode data={data} node={node}></TreeNode>;
     },
 
-    handleCommend(command) {
+    handleCommand(command) {
       console.log(command);
     },
 
     handleBlur() {
       this.$nuxt.$emit(Event.OPEN_GLOBAL_DIALOG, {
         dialogEvent: Event.CREATE_DIR,
-        dialogData: this.inputMkdir,
+        dialogData: {
+          label: this.inputMkdir,
+        },
       });
     },
 

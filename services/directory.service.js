@@ -17,14 +17,18 @@ module.exports = {
 	},
 
 	metadata: {
-		t: async () => await db.transaction()
 	},
 
 	actions: {
 		list: {
 			async handler() {
 				try {
-					const dirs = await Directory.findAll()
+					const dirs = await Directory.findAll({
+						order: [
+							['id', 'DESC']
+						]
+					})
+
 
 					return HttpResponse(false, HttpCode.OK, HttpText.OK, dirs)
 				}
@@ -64,15 +68,15 @@ module.exports = {
 			 * @returns inserted directory || errors
 			 */
 			async handler(ctx) {
-				try {
-					const t = await db.transaction()
+				const t = await db.transaction()
 
-					const data = ctx.data;
+				try {
+					const data = ctx.params;
 
 					const dir = await Directory.create(
-						{ data },
+						data,
 						{
-							transaction: t
+							transaction: t,
 						})
 
 					await t.commit()
@@ -95,9 +99,9 @@ module.exports = {
 			 * @returns updated directory || errors
 			 */
 			async handler(ctx) {
-				try {
-					const t = await db.transaction()
+				const t = await db.transaction()
 
+				try {
 					const id = ctx.params.id
 
 					const data = ctx.data;
@@ -129,9 +133,9 @@ module.exports = {
 			 * @returns removed directory || errors
 			 */
 			async handler(ctx) {
-				try {
-					const t = await db.transaction()
+				const t = await db.transaction()
 
+				try {
 					const id = ctx.params.id
 
 					const dir = await Directory.destroy(
