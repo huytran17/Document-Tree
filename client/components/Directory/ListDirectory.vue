@@ -2,7 +2,7 @@
   <div>
     <el-input
       placeholder="Thư mục mới"
-      v-model="inputMkdir"
+      v-model="inputDirectoryLabel"
       v-if="isCreate"
       autofocus
       @blur="handleBlur"
@@ -15,7 +15,6 @@
       node-key="id"
       :render-content="renderContent"
       @node-click="handleNodeClick"
-      children="directories"
     ></el-tree>
     <Dialog title="Chú ý">
       <span slot="message">
@@ -30,7 +29,6 @@
 import Dropdown from "./Dropdown";
 import Dialog from "../Global/Dialog";
 import TreeNode from "./TreeNode";
-import Vue from "Vue";
 import { Event } from "../../constants/event";
 
 export default {
@@ -42,12 +40,12 @@ export default {
   },
   data() {
     return {
-      inputMkdir: "",
+      inputDirectoryLabel: "",
     };
   },
   created() {
     this.$nuxt.$on(Event.CREATE_SUBDIR, (data) => {
-     //TODO
+      //TODO
     });
   },
   methods: {
@@ -56,7 +54,7 @@ export default {
     },
 
     renderContent(h, { node, data, store }) {
-      return <TreeNode data={data} node={node}></TreeNode>;
+      return <TreeNode data={data}></TreeNode>;
     },
 
     handleCommand(command) {
@@ -67,7 +65,7 @@ export default {
       this.$nuxt.$emit(Event.OPEN_GLOBAL_DIALOG, {
         dialogEvent: Event.CREATE_DIR,
         dialogData: {
-          label: this.inputMkdir,
+          label: this.inputDirectoryLabel,
         },
       });
     },

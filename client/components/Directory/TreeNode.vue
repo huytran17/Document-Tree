@@ -1,10 +1,10 @@
 <template>
-  <div class="custom-tree-node" :data-id="node.id">
-    <div :class="'node-' + node.id">
+  <div class="custom-tree-node" :data-id="data.id">
+    <div :class="'node-' + data.id">
       <i class="el-icon-folder" style="color: #f1d821"></i>
-      <span style="margin-left: 5px">{{ node.label }}</span>
+      <span style="margin-left: 5px">{{ data.label }}</span>
 
-      <Dropdown :data="data" :node="node" />
+      <Dropdown :data="data" />
     </div>
   </div>
 </template>
@@ -14,10 +14,10 @@ import Dropdown from "./Dropdown";
 
 export default {
   name: "TreeNode",
-  props: ["node", "data"],
+  props: ["data"],
   components: { Dropdown },
   data() {
-    return { inpMkSubDir: "" };
+    return {};
   },
   created() {},
 };
@@ -35,7 +35,7 @@ export default {
   position: absolute;
   bottom: 0;
   left: 0;
-  top: 100%
+  top: 100%;
 }
 .custom-tree-node {
 }

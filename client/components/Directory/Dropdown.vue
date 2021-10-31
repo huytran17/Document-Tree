@@ -18,27 +18,75 @@
         >Xóa</el-dropdown-item
       >
     </el-dropdown-menu>
+
+    <!-- modal nhập thông tin -->
+    <el-dialog
+      title="Tạo thư mục con"
+      :visible.sync="dialogFormVisible"
+      :before-close="handleCloseModal"
+      width="400px"
+    >
+      <el-form>
+        <el-form-item label="Tên thư mục" :label-width="formLabelWidth">
+          <el-input
+            v-model="directoryLabel"
+            autocomplete="off"
+            placeholder="Thư mục mới"
+          ></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">Hủy</el-button>
+        <el-button type="primary" @click="createSubDirectory">Tạo</el-button>
+      </span>
+    </el-dialog>
   </el-dropdown>
 </template>
 
 <script>
-import { Event } from "../../constants/event";
+import { CONFIG } from "../../config/app";
 
 export default {
   name: "DirectoryDropdown",
-  props: ["data", "node"],
+  props: ["data"],
+  components: {},
+  data() {
+    return {
+      dialogFormVisible: false,
+      directoryLabel: "",
+      formLabelWidth: "120px",
+    };
+  },
   methods: {
     handleCommand(command) {
       switch (command) {
         case "create":
-          this.$nuxt.$emit(Event.CREATE_SUBDIR, {
-            data: this.data,
-            node: this.node,
-          });
+          this.dialogFormVisible = true;
           break;
         default:
           break;
       }
+    },
+
+    handleCloseModal(done) {
+      this.$confirm(
+        `Bạn có muốn tạo thư mục ${this.directoryLabel || "Thư mục mới"} không?`
+      )
+        .then((_) => {
+          this.createSubDirectory();
+
+          done();
+        })
+        .catch((_) => {});
+    },
+
+    async createSubDirectory() {
+      await this.$axios
+        .$post(`${CONFIG.BASE_URL}/api/directories/create`, {
+          label: this.directoryLabel || "Thư mục mới",
+          directoryId: this.data.id,
+        })
+        .then((res) => {});
     },
   },
 };

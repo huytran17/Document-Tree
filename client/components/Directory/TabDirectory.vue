@@ -9,7 +9,7 @@
       </el-col>
       <el-col :span="24" class="col2">
         <ListDirectory
-          :data="nodes"
+          :data="directoriesTree"
           :inputMkdir="inputMkdir"
           :isCreate="isCreate"
         ></ListDirectory>
@@ -21,18 +21,38 @@
 <script>
 import ListDirectory from "./ListDirectory";
 import { Event } from "../../constants/event";
+import { CONFIG } from "../../config/app";
 
 export default {
   name: "TabDirectory",
   components: {
     ListDirectory,
   },
+
+  async created() {
+    await this.fetchDirectories();
+
+    this.$nuxt.$on(Event.CREATE_DIR, async (data) => {
+      await this.$axios
+        .$post(`${CONFIG.BASE_URL}/api/directories/create`, {
+          ...data,
+        })
+        .then(async (res) => {
+          await this.fetchDirectories();
+        });
+    });
+
+    this.$nuxt.$on(Event.CLOSE_GLOBAL_DIALOG, () => {
+      this.isCreate = false;
+    });
+  },
+
   data() {
     return {
-      dirs: [],
+      directories: [],
       inputMkdir: "",
       isCreate: false,
-      nodes: [],
+      directoriesTree: [],
     };
   },
   methods: {
@@ -41,62 +61,44 @@ export default {
     },
 
     getRootNodes() {
-      for (var i = 0; i < this.dirs.length; i++) {
-        if (!this.dirs[i].directoryId) {
-          this.nodes.push(this.dirs[i]);
-          this.dirs.splice(i, 1);
+      for (var i = 0; i < this.directories.length; i++) {
+        if (!this.directories[i].directoryId) {
+          this.directoriesTree.push(this.directories[i]);
+          this.directories.splice(i, 1);
           --i;
         }
       }
     },
 
-    recursiveTree(nodes, search) {
-      if (nodes.length === 0) return null;
+    createDirectoryTree(directoriesTree, restNodes) {
+      if (directoriesTree.length === 0) return null;
 
-      nodes.forEach((par) => {
-        par.children = [];
+      directoriesTree.forEach((parentNode) => {
+        parentNode.children = [];
 
-        for (var i = 0; i < search.length; i++) {
-          if (search[i].directoryId === par.id) {
-            par.children.push(search[i]);
-            search.splice(i, 1);
+        for (var i = 0; i < restNodes.length; i++) {
+          if (restNodes[i].directoryId === parentNode.id) {
+            parentNode.children.push(restNodes[i]);
+            restNodes.splice(i, 1);
             --i;
           }
         }
 
-        return this.recursiveTree(par.children, search);
+        return this.createDirectoryTree(parentNode.children, restNodes);
       });
     },
 
-    async fetchDirs() {
+    async fetchDirectories() {
       await this.$axios
-        .$get("http://localhost:3000/api/directories/list")
+        .$get(`${CONFIG.BASE_URL}/api/directories/list`)
         .then((res) => {
-          this.dirs = res.data;
-          this.nodes = [];
+          this.directories = res.data;
+          this.directoriesTree = [];
           this.isCreate = false;
           this.getRootNodes();
-          this.recursiveTree(this.nodes, this.dirs);
+          this.createDirectoryTree(this.directoriesTree, this.directories);
         });
     },
-  },
-
-  async created() {
-    await this.fetchDirs();
-
-    this.$nuxt.$on(Event.CREATE_DIR, async (data) => {
-      await this.$axios
-        .$post("http://localhost:3000/api/directories/create", {
-          ...data,
-        })
-        .then(async (res) => {
-          await this.fetchDirs();
-        });
-    });
-
-    this.$nuxt.$on(Event.CLOSE_GLOBAL_DIALOG, () => {
-      this.isCreate = false;
-    });
   },
 };
 </script>
