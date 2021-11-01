@@ -1,3 +1,4 @@
-export const state = () => ({
-    directories: []
+export default () => ({
+    directories: [],
+    directoriesTree: [],
 })
