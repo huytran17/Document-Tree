@@ -37,7 +37,10 @@ export default {
   async created() {
     await this.fetchDirectories();
     this.getRootNodes();
-    this.createDirectoryTree();
+    this.createDirectoryTree({
+      directoriesTree: this.directoriesTree,
+      directories: this.directories,
+    });
 
     this.$nuxt.$on(Event.CREATE_DIR, async (data) => {
       await this.$axios

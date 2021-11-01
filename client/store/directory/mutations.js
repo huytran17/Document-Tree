@@ -1,5 +1,5 @@
 export default {
-    reloadDirectories(state, directories) {
+    refreshDirectories(state, directories) {
         state.directories = directories
     },
 
@@ -13,14 +13,16 @@ export default {
         }
     },
 
-    createDirectoryTree(state) {
-        recurseDirectoryTree(state)
+    initialChildrenDirectory(state, parentDirectory) {
+        parentDirectory.children = []
     },
 
-    addChildrenDirectory(state) {
-        
+    addChildrenDirectory(state, payload) {
+        payload.parentDirectory.children.push(payload.childDirectory)
     },
 
-    cutDirectory
+    spliceDirectories(state, position) {
+        state.directories.splice(position, 1)
+    }
 
 }

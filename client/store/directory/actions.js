@@ -5,31 +5,33 @@ export default {
         await this.$axios
             .$get(`${CONFIG.BASE_URL}/api/directories/list`)
             .then((res) => {
-                commit('reloadDirectories', res.data)
+                commit('refreshDirectories', res.data)
             });
     },
 
     getRootNodes({ commit }) {
         commit('getRootNodes')
     },
-    //TODO: 
-    createDirectoryTree({ state, dispatch }) {
-        var { directoriesTree, directories } = state
 
-        if (directoriesTree.length === 0) return null;
+    createDirectoryTree({ state, dispatch, commit }, payload) {
+        if (payload.directoriesTree.length === 0) return null;
 
-        directoriesTree.forEach((parentDirectory) => {
-            parentDirectory.children = [];
+        payload.directoriesTree.forEach((parentDirectory, k) => {
+            commit('initialChildrenDirectory', parentDirectory)
 
-            for (var i = 0; i < directories.length; i++) {
-                if (directories[i].directoryId === parentDirectory.id) {
-                    parentDirectory.children.push(directories[i]);
-                    directories.splice(i, 1);
+            for (var i = 0; i < payload.directories.length; i++) {
+                if (payload.directories[i].directoryId === payload.directoriesTree[k].id) {
+                    commit('addChildrenDirectory', { parentDirectory, childDirectory: payload.directories[i] })
+                    commit('spliceDirectories', i)
                     --i;
                 }
             }
 
-            return dispatch('createDirectoryTree');
+            return dispatch('createDirectoryTree',
+                {
+                    directoriesTree: payload.directoriesTree[k].children,
+                    directories: state.directories
+                });
         });
     }
 }
