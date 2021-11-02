@@ -3,9 +3,7 @@
 </template>
 
 <script>
-export default {
-  
-};
+export default {};
 </script>
 
 <style>
@@ -23,6 +21,12 @@ export default {
 }
 .w-100 {
   width: 100%;
+}
+.w-75 {
+  width: 75%;
+}
+.w-50 {
+  width: 50%;
 }
 .el-tree-node__content {
   height: 30px;

@@ -1,23 +1,11 @@
 <template>
   <el-main>
     <el-row :gutter="0" class="h-100">
-      <el-col :span="7" class="col1 h-100">
-        <el-col>
-          <h2>Tài liệu</h2>
-        </el-col>
-        <el-col class="h-100">
-          <el-col :span="12" class="h-100">
-            <TabDirectory />
-          </el-col>
-          <el-col :span="12" class="h-100">
-            <TabDocument />
-          </el-col>
-        </el-col>
-        <el-col>Alo</el-col>
+      <el-col :span="4" class="h-100">
+        <TabDirectory />
       </el-col>
-
-      <el-col :span="17" class="col2 h-100">
-        <TabContent />
+      <el-col :span="20" class="h-100">
+        <TabDocument />
       </el-col>
     </el-row>
   </el-main>
