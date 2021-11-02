@@ -11,7 +11,8 @@ module.exports = {
 	settings: {
 		routes: [{
 			alisases: {
-				"REST directories": "directories"
+				"REST directories": "directories",
+				"GET documents": "directories.documents"
 			}
 		}]
 	},
@@ -151,6 +152,32 @@ module.exports = {
 				}
 			}
 		},
+
+		documents: {
+			params: {
+				dirId: "number"
+			},
+
+			/**
+			 * 
+			 * @param {Context} ctx 
+			 * @returns all documents belongs to the directory's id
+			 */
+			async handler(ctx) {
+				try {
+					const dirId = ctx.params.dirId
+
+					const directory = await Directory.findOne({ where: { id: dirId } })
+
+					const documents = await directory.getDocuments();
+
+					return documents
+				}
+				catch (err) {
+					return new Error(err.message)
+				}
+			}
+		}
 	},
 
 	events: {},
