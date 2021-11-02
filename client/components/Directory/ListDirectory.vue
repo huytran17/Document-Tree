@@ -1,81 +1,37 @@
 <template>
   <div>
-    <el-input
-      placeholder="Thư mục mới"
-      v-model="inputDirectoryLabel"
-      v-if="isCreate"
-      autofocus
-      @blur="handleBlur"
-    >
-      <i slot="prefix" class="el-input__icon el-icon-folder"></i>
-    </el-input>
     <el-tree
       :data="data"
       :highlight-current="true"
       node-key="id"
       :render-content="renderContent"
       @node-click="handleNodeClick"
+      ref="treeDirectories"
     ></el-tree>
-    <Dialog title="Chú ý">
-      <span slot="message">
-        <i class="el-icon-warning"></i>
-        <span>Bạn có muốn lưu thư mục vừa tạo?</span>
-      </span>
-    </Dialog>
   </div>
 </template>
 
 <script>
 import Dropdown from "./Dropdown";
-import Dialog from "../Global/Dialog";
 import TreeNode from "./TreeNode";
-import { Event } from "../../constants/event";
 
 export default {
   name: "ListDirectory",
-  props: ["data", "isCreate"],
+  props: ["data"],
   components: {
     Dropdown,
-    Dialog,
   },
   data() {
-    return {
-      inputDirectoryLabel: "",
-    };
+    return {};
   },
-  created() {
-    this.$nuxt.$on(Event.CREATE_SUBDIR, (data) => {
-      //TODO
-    });
-  },
+
   methods: {
     handleNodeClick(data) {
-      console.log(data.label);
+      console.log(data);
     },
 
     renderContent(h, { node, data, store }) {
       return <TreeNode data={data}></TreeNode>;
-    },
-
-    handleCommand(command) {
-      console.log(command);
-    },
-
-    handleBlur() {
-      this.$nuxt.$emit(Event.OPEN_GLOBAL_DIALOG, {
-        dialogEvent: Event.CREATE_DIR,
-        dialogData: {
-          label: this.inputDirectoryLabel,
-        },
-      });
-    },
-
-    append(data) {
-      const newChild = { id: 100, label: "testtest", children: [] };
-      if (!data.children) {
-        this.$set(data, "children", []);
-      }
-      data.children.unshift(newChild);
     },
   },
 };

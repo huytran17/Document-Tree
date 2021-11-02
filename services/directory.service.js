@@ -102,12 +102,10 @@ module.exports = {
 				const t = await db.transaction()
 
 				try {
-					const id = ctx.params.id
-
-					const data = ctx.data;
+					const { id, label } = ctx.params
 
 					const dir = await Directory.update(
-						{ data },
+						{ label },
 						{
 							where: { id: id },
 							transaction: t

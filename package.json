@@ -32,6 +32,7 @@
     "moleculer-web": "^0.10.2",
     "mysql2": "^2.3.2",
     "nats": "^2.2.0",
+    "portal-vue": "^2.1.7",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^6.8.0"
   },

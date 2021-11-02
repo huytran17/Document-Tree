@@ -5,6 +5,7 @@
       <SideBar />
       <Content />
     </el-container>
+    <portal-target name="portal_root"></portal-target>
   </el-container>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="custom-tree-node" :data-id="data.id">
+  <div class="custom-tree-node" :data-id="data.id"> 
     <div :class="'node-' + data.id">
       <i class="el-icon-folder" style="color: #f1d821"></i>
       <span style="margin-left: 5px">{{ data.label }}</span>

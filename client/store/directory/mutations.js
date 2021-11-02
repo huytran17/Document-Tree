@@ -1,5 +1,6 @@
 export default {
     refreshDirectories(state, directories) {
+        refreshData(state);
         state.directories = directories
     },
 
@@ -23,6 +24,10 @@ export default {
 
     spliceDirectories(state, position) {
         state.directories.splice(position, 1)
-    }
+    },
+}
 
+function refreshData(state) {
+    state.directories = [];
+    state.directoriesTree = [];
 }
