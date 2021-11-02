@@ -14,6 +14,8 @@
 <script>
 import Dropdown from "./Dropdown";
 import TreeNode from "./TreeNode";
+import { mapState, mapActions } from "vuex";
+import { CONFIG } from "../../config/app";
 
 export default {
   name: "ListDirectory",
@@ -25,9 +27,19 @@ export default {
     return {};
   },
 
+  computed: {
+    ...mapState("document", ["documents", "documentsTree"]),
+  },
+
   methods: {
-    handleNodeClick(data) {
-      console.log(data);
+    ...mapActions("document", [
+      "createDocumentTree",
+      "getRootNodes",
+      "getFromDirectory",
+    ]),
+
+    async handleNodeClick(data) {
+      await this.getFromDirectory(data.id);
     },
 
     renderContent(h, { node, data, store }) {

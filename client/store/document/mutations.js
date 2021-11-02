@@ -1,5 +1,5 @@
 export default {
-    reloadDocuments(state, documents) {
+    refreshDocuments(state, documents) {
         refreshData(state);
         state.documents = documents
     },

@@ -33,5 +33,22 @@ export default {
                     documents: state.documents
                 });
         });
+    },
+
+    async getFromDirectory({ commit, dispatch, state }, directoryId) {
+        await this.$axios
+            .$get(`${CONFIG.BASE_URL}/api/directories/documents`, {
+                params: {
+                    directoryId: directoryId
+                },
+            })
+            .then(async (res) => {
+                commit('refreshDocuments', res)
+                dispatch('getRootNodes')
+                dispatch('createDocumentTree', {
+                    documentsTree: state.documentsTree,
+                    documents: state.documents,
+                })
+            });
     }
 }

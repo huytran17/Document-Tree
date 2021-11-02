@@ -155,7 +155,7 @@ module.exports = {
 
 		documents: {
 			params: {
-				dirId: "number"
+				directoryId: "string"
 			},
 
 			/**
@@ -165,9 +165,9 @@ module.exports = {
 			 */
 			async handler(ctx) {
 				try {
-					const dirId = ctx.params.dirId
+					const directoryId = ctx.params.directoryId
 
-					const directory = await Directory.findOne({ where: { id: dirId } })
+					const directory = await Directory.findOne({ where: { id: directoryId } })
 
 					const documents = await directory.getDocuments();
 
