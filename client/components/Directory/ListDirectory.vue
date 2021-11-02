@@ -6,7 +6,6 @@
       node-key="id"
       :render-content="renderContent"
       @node-click="handleNodeClick"
-      ref="treeDirectories"
     ></el-tree>
   </div>
 </template>
@@ -15,7 +14,6 @@
 import Dropdown from "./Dropdown";
 import TreeNode from "./TreeNode";
 import { mapState, mapActions } from "vuex";
-import { CONFIG } from "../../config/app";
 
 export default {
   name: "ListDirectory",
@@ -27,16 +25,8 @@ export default {
     return {};
   },
 
-  computed: {
-    ...mapState("document", ["documents", "documentsTree"]),
-  },
-
   methods: {
-    ...mapActions("document", [
-      "createDocumentTree",
-      "getRootNodes",
-      "getFromDirectory",
-    ]),
+    ...mapActions("document", ["getFromDirectory"]),
 
     async handleNodeClick(data) {
       await this.getFromDirectory(data.id);

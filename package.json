@@ -34,7 +34,8 @@
     "nats": "^2.2.0",
     "portal-vue": "^2.1.7",
     "reflect-metadata": "^0.1.13",
-    "sequelize": "^6.8.0"
+    "sequelize": "^6.8.0",
+    "vue-quill-editor": "^3.0.6"
   },
   "engines": {
     "node": ">= 12.x.x"

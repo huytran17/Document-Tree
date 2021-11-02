@@ -1,6 +1,6 @@
 <template>
   <el-tree
-    :data="documentsTree"
+    :data="data"
     :highlight-current="true"
     node-key="id"
     :render-content="renderContent"
@@ -8,15 +8,9 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
-
 export default {
   name: "ListDirectory",
   props: ["data"],
-
-  computed: {
-    ...mapState("document", ["documents", "documentsTree"]),
-  },
 
   methods: {
     renderContent(h, { node, data, store }) {
