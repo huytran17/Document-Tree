@@ -28,13 +28,17 @@
       </el-col>
     </el-row>
 
-    <el-dialog title="Chú ý" :visible.sync="dialogVisible" width="30%">
-      <slot name="message">Bạn có muốn tạo thư mục này không?</slot>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="refreshData"> Hủy </el-button>
-        <el-button type="primary" @click="onCreateDirectory"> Đồng ý </el-button>
-      </span>
-    </el-dialog>
+    <portal to="portal_root">
+      <el-dialog title="Chú ý" :visible.sync="dialogVisible" width="30%">
+        <slot name="message">Bạn có muốn tạo thư mục này không?</slot>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="refreshData"> Hủy </el-button>
+          <el-button type="primary" @click="onCreateDirectory">
+            Đồng ý
+          </el-button>
+        </span>
+      </el-dialog>
+    </portal>
   </el-container>
 </template>
 

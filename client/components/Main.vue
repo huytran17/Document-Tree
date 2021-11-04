@@ -6,6 +6,8 @@
       <Content />
     </el-container>
     <portal-target name="portal_root"></portal-target>
+    <portal-target name="portal_document"></portal-target>
+    <portal-target name="portal_directory"></portal-target>
   </el-container>
 </template>
 

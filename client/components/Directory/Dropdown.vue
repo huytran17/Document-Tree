@@ -19,7 +19,7 @@
       >
     </el-dropdown-menu>
 
-    <portal to="portal_root">
+    <portal to="portal_directory">
       <!-- model tạo thư mục con -->
       <el-dialog
         title="Tạo thư mục con"
@@ -70,7 +70,7 @@
 
       <!-- modal xác nhận xóa -->
       <el-dialog
-        title="Sửa tên thư mục"
+        title="Xóa thư mục"
         v-if="dialogDeleteDirVisible"
         :visible.sync="dialogDeleteDirVisible"
         width="400px"
