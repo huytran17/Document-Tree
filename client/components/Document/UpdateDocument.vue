@@ -62,7 +62,7 @@ export default {
         id: this.checkedDocument.id,
         label: this.label,
         content: this.content,
-        directoryId: this.checkedDirectory.id,
+        directoryId: this.checkedDocument.directoryId,
       }).then(async () => {
         this.$message({
           message: "Cập nhật thành công.",

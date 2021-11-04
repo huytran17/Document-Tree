@@ -117,6 +117,7 @@ export default {
       "createSubDirectory",
       "updateDirectory",
       "removeDirectory",
+      "setChecked",
     ]),
     ...mapMutations("document", ["refreshDocuments"]),
 
@@ -179,6 +180,7 @@ export default {
           type: "success",
         });
         this.refreshDocuments();
+        this.setChecked(null);
       });
     },
 
