@@ -28,6 +28,14 @@ export default {
 
     setChecked(state, payload) {
         state.checkedDocument = payload
+    },
+
+    setIsUpdate(state, payload) {
+        state.isUpdate = payload
+    },
+
+    setIsView(state, payload) {
+        state.isView = payload
     }
 }
 

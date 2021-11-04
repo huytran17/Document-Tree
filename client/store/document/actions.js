@@ -17,6 +17,14 @@ export default {
         commit('setChecked', payload)
     },
 
+    setIsUpdate({ commit }, payload) {
+        commit('setIsUpdate', payload)
+    },
+
+    setIsView({ commit }, payload) {
+        commit('setIsView', payload)
+    },
+
     async getDocumentTree({ commit, dispatch, state }, payload) {
         commit('refreshDocuments', payload)
         dispatch('getRootNodes')

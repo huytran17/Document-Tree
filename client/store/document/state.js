@@ -1,5 +1,7 @@
 export default () => ({
     documents: [],
     documentsTree: [],
-    checkedDocument: null
+    checkedDocument: null,
+    isUpdate: false,
+    isView: false,
 })

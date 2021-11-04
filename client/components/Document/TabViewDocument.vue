@@ -5,7 +5,9 @@
         <h2>{{ checkedDocument.label }}</h2>
       </el-col>
       <el-col :span="12" class="col2">
-        <el-button type="primary" icon="el-icon-edit">Sửa</el-button>
+        <el-button type="primary" icon="el-icon-edit" @click="onUpdateDocument"
+          >Sửa</el-button
+        >
         <el-button type="danger" icon="el-icon-delete">Xóa</el-button>
       </el-col>
     </el-row>
@@ -28,13 +30,22 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   props: ["inputDocumentLabel", "inputDocumentContent"],
 
   computed: {
     ...mapState("document", ["checkedDocument"]),
+  },
+
+  methods: {
+    ...mapActions("document", ["setIsUpdate", "setIsView"]),
+
+    onUpdateDocument() {
+      this.setIsUpdate(true);
+      this.setIsView(false);
+    },
   },
 
   data() {

@@ -19,11 +19,7 @@
     </el-row>
     <el-row class="w-100">
       <el-col :span="24">
-        <CreateDocument
-          v-if="isCreate"
-          :inputDocumentLabel="inputDocumentLabel"
-          :inputDocumentContent="inputDocumentContent"
-        />
+        <UpdateDocument v-if="isUpdate" />
 
         <ViewDocument v-if="isView" />
       </el-col>
@@ -33,7 +29,7 @@
 
 <script>
 import ListDocument from "./ListDocument";
-import CreateDocument from "./CreateDocument";
+import UpdateDocument from "./UpdateDocument";
 import ViewDocument from "./ViewDocument";
 import { mapState, mapActions } from "vuex";
 
@@ -42,20 +38,20 @@ export default {
   components: {
     ListDocument,
     ViewDocument,
-    CreateDocument,
+    UpdateDocument,
   },
 
   data() {
-    return {
-      isCreate: false,
-      isView: false,
-      inputDocumentLabel: "Tài liệu mới",
-      inputDocumentContent: "",
-    };
+    return {};
   },
 
   computed: {
-    ...mapState("document", ["documents", "documentsTree"]),
+    ...mapState("document", [
+      "documents",
+      "documentsTree",
+      "isUpdate",
+      "isView",
+    ]),
     ...mapState("directory", ["checkedDirectory"]),
   },
 
@@ -64,24 +60,26 @@ export default {
       "createDocument",
       "getFromDirectory",
       "setChecked",
+      "setIsView",
+      "setIsUpdate",
     ]),
 
     handleNodeClick(data) {
-      this.isCreate = false;
-      this.isView = true;
+      this.setIsUpdate(false);
+      this.setIsView(true);
       this.setChecked(data);
     },
 
     async onCreateDocument() {
-      this.isCreate = false;
-      this.isView = false;
+      this.setIsUpdate(false);
+      this.setIsView(false);
 
       await this.createDocument({
         label: "Tài liệu mới",
         documentId: null,
         directoryId: this.checkedDirectory.id,
       }).then(async () => {
-        this.isCreate = true;
+        this.setIsUpdate(true);
         await this.getFromDirectory(this.checkedDirectory.id);
       });
     },

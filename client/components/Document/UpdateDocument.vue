@@ -12,14 +12,7 @@
     </el-row>
 
     <client-only>
-      <quill-editor
-        ref="editor"
-        v-model="content"
-        :options="editorOption"
-        @blur="onEditorBlur($event)"
-        @focus="onEditorFocus($event)"
-        @ready="onEditorReady($event)"
-      />
+      <quill-editor ref="editor" v-model="content" :options="editorOption" />
     </client-only>
   </TabViewDocument>
 </template>
@@ -29,8 +22,6 @@ import { mapState, mapActions } from "vuex";
 import TabViewDocument from "./TabViewDocument";
 
 export default {
-  props: ["inputDocumentLabel", "inputDocumentContent"],
-
   components: { TabViewDocument },
 
   computed: {
@@ -40,12 +31,11 @@ export default {
 
   data() {
     return {
-      label: this.inputDocumentLabel,
-      content: this.inputDocumentContent,
+      label: "",
+      content: "",
       circleUrl:
         "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
       editorOption: {
-        // Some Quill options...
         theme: "snow",
         modules: {
           toolbar: [
@@ -57,8 +47,11 @@ export default {
     };
   },
 
-  mounted() {
-    console.log("App inited, the Quill instance object is:", this.$refs.editor);
+  created() {
+    this.label = this.checkedDocument
+      ? this.checkedDocument.label
+      : "Tài liệu mới";
+    this.content = this.checkedDocument ? this.checkedDocument.content : "";
   },
 
   methods: {
@@ -73,18 +66,6 @@ export default {
       }).then(async () => {
         await this.getFromDirectory(this.checkedDirectory.id);
       });
-    },
-
-    onEditorBlur(editor) {
-      console.log("editor blur!", editor);
-    },
-
-    onEditorFocus(editor) {
-      console.log("editor focus!", editor);
-    },
-
-    onEditorReady(editor) {
-      console.log("editor ready!", editor);
     },
   },
 };
