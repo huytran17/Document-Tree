@@ -39,7 +39,9 @@
         </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogMkDirVisible = false">Hủy</el-button>
-          <el-button type="primary" @click="onCreateSubDirectory">Tạo</el-button>
+          <el-button type="primary" @click="onCreateSubDirectory"
+            >Tạo</el-button
+          >
         </span>
       </el-dialog>
 
@@ -86,7 +88,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapMutations } from "vuex";
 
 export default {
   name: "DirectoryDropdown",
@@ -116,6 +118,7 @@ export default {
       "updateDirectory",
       "removeDirectory",
     ]),
+    ...mapMutations("document", ["refreshDocuments"]),
 
     handleCommand(command) {
       switch (command) {
@@ -160,7 +163,9 @@ export default {
     },
 
     async onRemoveDirectory() {
-      await this.removeDirectory({ id: this.data.id });
+      await this.removeDirectory({ id: this.data.id }).then(() => {
+        this.refreshDocuments();
+      });
     },
 
     async getDirectoryTree() {
