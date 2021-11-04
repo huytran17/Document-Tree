@@ -41,10 +41,6 @@ export default {
     UpdateDocument,
   },
 
-  data() {
-    return {};
-  },
-
   computed: {
     ...mapState("document", [
       "documents",
@@ -71,17 +67,28 @@ export default {
     },
 
     async onCreateDocument() {
-      this.setIsUpdate(false);
-      this.setIsView(false);
+      if (!this.checkedDirectory) {
+        this.$message({
+          message: "Vui lòng chọn 1 thư mục.",
+          type: "warning",
+        });
+      } else {
+        this.setIsUpdate(false);
+        this.setIsView(false);
 
-      await this.createDocument({
-        label: "Tài liệu mới",
-        documentId: null,
-        directoryId: this.checkedDirectory.id,
-      }).then(async () => {
-        this.setIsUpdate(true);
-        await this.getFromDirectory(this.checkedDirectory.id);
-      });
+        await this.createDocument({
+          label: "Tài liệu mới",
+          documentId: null,
+          directoryId: this.checkedDirectory.id,
+        }).then(async () => {
+          this.$message({
+            message: "Đã tạo tài liệu.",
+            type: "success",
+          });
+          this.setIsUpdate(true);
+          await this.getFromDirectory(this.checkedDirectory.id);
+        });
+      }
     },
 
     renderContent(h, { node, data, store }) {

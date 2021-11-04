@@ -21,9 +21,6 @@ export default {
   components: {
     Dropdown,
   },
-  data() {
-    return {};
-  },
 
   methods: {
     ...mapActions("document", ["getFromDirectory"]),

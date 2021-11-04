@@ -77,7 +77,14 @@ export default {
     ]),
 
     async onCreateDirectory() {
-      await this.createDirectory({ label: this.inputDirectoryLabel });
+      await this.createDirectory({ label: this.inputDirectoryLabel }).then(
+        () => {
+          this.$message({
+            message: "Đã tạo thư mục.",
+            type: "success",
+          });
+        }
+      );
 
       this.refreshData();
     },

@@ -89,6 +89,11 @@ export default {
     async onRemoveDocument() {
       await this.removeDocument({ id: this.checkedDocument.id }).then(
         async () => {
+          this.$message({
+            message: "Đã xóa.",
+            type: "success",
+          });
+
           this.dialogDeleteDocVisible = false;
           this.setIsUpdate(false);
           this.setIsView(false);

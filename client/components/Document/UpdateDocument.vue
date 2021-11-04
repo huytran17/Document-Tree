@@ -64,6 +64,10 @@ export default {
         content: this.content,
         directoryId: this.checkedDirectory.id,
       }).then(async () => {
+        this.$message({
+          message: "Cập nhật thành công.",
+          type: "success",
+        });
         await this.getFromDirectory(this.checkedDirectory.id);
       });
     },

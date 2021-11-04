@@ -152,6 +152,11 @@ export default {
       await this.createSubDirectory({
         label: this.directoryLabel,
         parentId: this.data.id,
+      }).then(() => {
+        this.$message({
+          message: "Đã tạo thư mục.",
+          type: "success",
+        });
       });
     },
 
@@ -159,11 +164,20 @@ export default {
       await this.updateDirectory({
         label: this.directoryLabel,
         id: this.data.id,
+      }).then(() => {
+        this.$message({
+          message: "Cập nhật thành công.",
+          type: "success",
+        });
       });
     },
 
     async onRemoveDirectory() {
       await this.removeDirectory({ id: this.data.id }).then(() => {
+        this.$message({
+          message: "Đã xóa.",
+          type: "success",
+        });
         this.refreshDocuments();
       });
     },
