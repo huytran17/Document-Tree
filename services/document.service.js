@@ -111,7 +111,7 @@ module.exports = {
 
 				try {
 
-					const id = ctx.data.id
+					const { id } = ctx.params
 
 					const doc = await Document.destroy(
 						{

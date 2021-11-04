@@ -94,8 +94,14 @@ export default {
                     },
                 }
             )
-            .then(async (res) => {
-                // await dispatch('getDocumentTree', res)
-            });
+    },
+
+    async removeDocument({ commit, state, dispatch }, payload) {
+        await this.$axios
+            .$post(`${CONFIG.BASE_URL}/api/documents/remove`, null, {
+                params: {
+                    id: payload.id,
+                },
+            })
     }
 }

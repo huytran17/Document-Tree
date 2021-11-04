@@ -48,7 +48,7 @@ export default {
         });
     },
 
-    async createDirectory({ commit, state, dispatch }, payload) {
+    async createDirectory({ dispatch }, payload) {
         await this.$axios
             .$post(`${CONFIG.BASE_URL}/api/directories/create`, {
                 label: payload.label || "Thư mục mới",
@@ -58,7 +58,7 @@ export default {
             });
     },
 
-    async createSubDirectory({ commit, state, dispatch }, payload) {
+    async createSubDirectory({ dispatch }, payload) {
         await this.$axios
             .$post(`${CONFIG.BASE_URL}/api/directories/create`, {
                 label: payload.label || "Thư mục mới",
@@ -69,7 +69,7 @@ export default {
             });
     }
     ,
-    async updateDirectory({ commit, state, dispatch }, payload) {
+    async updateDirectory({ dispatch }, payload) {
         await this.$axios
             .$post(
                 `${CONFIG.BASE_URL}/api/directories/update`,
@@ -87,7 +87,7 @@ export default {
             });
     },
 
-    async removeDirectory({ commit, state, dispatch }, payload) {
+    async removeDirectory({ dispatch }, payload) {
         await this.$axios
             .$post(`${CONFIG.BASE_URL}/api/directories/remove`, null, {
                 params: {

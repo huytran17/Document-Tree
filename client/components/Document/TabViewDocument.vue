@@ -8,7 +8,9 @@
         <el-button type="primary" icon="el-icon-edit" @click="onUpdateDocument"
           >Sửa</el-button
         >
-        <el-button type="danger" icon="el-icon-delete">Xóa</el-button>
+        <el-button type="danger" icon="el-icon-delete" @click="onRemoveDocument"
+          >Xóa</el-button
+        >
       </el-col>
     </el-row>
     <el-row class="w-100">
@@ -37,14 +39,30 @@ export default {
 
   computed: {
     ...mapState("document", ["checkedDocument"]),
+    ...mapState("directory", ["checkedDirectory"]),
   },
 
   methods: {
-    ...mapActions("document", ["setIsUpdate", "setIsView"]),
+    ...mapActions("document", [
+      "setIsUpdate",
+      "setIsView",
+      "removeDocument",
+      "getFromDirectory",
+    ]),
 
     onUpdateDocument() {
       this.setIsUpdate(true);
       this.setIsView(false);
+    },
+
+    async onRemoveDocument() {
+      await this.removeDocument({ id: this.checkedDocument.id }).then(
+        async () => {
+          this.setIsUpdate(false);
+          this.setIsView(false);
+          await this.getFromDirectory(this.checkedDirectory.id);
+        }
+      );
     },
   },
 
