@@ -1,7 +1,7 @@
 <template>
   <el-container class="h-100 w-100">
     <el-row class="w-100">
-      <el-col :span="24" class="col1">
+      <el-col :span="24">
         <span class="mk mkdir">
           <i class="el-icon-plus"></i>
           <span @click="isCreate = true">Tạo thư mục</span>
@@ -20,7 +20,7 @@
         </el-input>
       </el-col>
 
-      <el-col :span="24" class="col2">
+      <el-col :span="24">
         <ListDirectory
           :data="directoriesTree"
           :isCreate="isCreate"
@@ -108,7 +108,7 @@ export default {
 </script>
 
 <style scoped>
-.col1 {
+.el-row:nth-child(1) .el-row:nth-child(1) {
   height: 28px;
   text-align: left;
   line-height: 28px;

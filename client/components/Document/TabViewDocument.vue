@@ -1,10 +1,10 @@
 <template>
   <el-container class="h-100">
     <el-row class="w-100">
-      <el-col :span="12" class="col1">
+      <el-col :span="12" class="col">
         <h2>{{ checkedDocument.label }}</h2>
       </el-col>
-      <el-col :span="12" class="col2">
+      <el-col :span="12" class="col">
         <el-button type="primary" icon="el-icon-edit" @click="onUpdateDocument"
           >Sửa</el-button
         >
@@ -17,10 +17,10 @@
       </el-col>
     </el-row>
     <el-row class="w-100">
-      <el-col :span="4" class="col3 h-100">
+      <el-col :span="4" class="col h-100">
         <i class="el-icon-paperclip"></i> 0 hạng mục
       </el-col>
-      <el-col :span="12" class="col4">
+      <el-col :span="12" class="col">
         <el-avatar size="medium" :src="circleUrl"></el-avatar>
         <p>Trần Văn Huy</p>
       </el-col>
@@ -110,14 +110,14 @@ export default {
   padding: 10px;
   flex-direction: column;
 }
-.col1 {
+.el-row:nth-child(1) .col:nth-child(1) {
   text-align: left;
 }
-.col2 {
+.el-row:nth-child(1) .col:nth-child(2) {
   text-align: right;
 }
-.col3,
-.col4 {
+.el-row:nth-child(2) .col:nth-child(1),
+.el-row:nth-child(2) .col:nth-child(2) {
   text-align: left;
   display: flex;
   align-items: center;
