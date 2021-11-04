@@ -20,10 +20,12 @@
     <el-row class="w-100">
       <el-col :span="24">
         <CreateDocument
-          v-if="isCreated"
+          v-if="isCreate"
           :inputDocumentLabel="inputDocumentLabel"
           :inputDocumentContent="inputDocumentContent"
         />
+
+        <ViewDocument v-if="isView" />
       </el-col>
     </el-row>
   </el-container>
@@ -32,18 +34,21 @@
 <script>
 import ListDocument from "./ListDocument";
 import CreateDocument from "./CreateDocument";
+import ViewDocument from "./ViewDocument";
 import { mapState, mapActions } from "vuex";
 
 export default {
   name: "TabDocument",
   components: {
     ListDocument,
+    ViewDocument,
     CreateDocument,
   },
 
   data() {
     return {
-      isCreated: false,
+      isCreate: false,
+      isView: false,
       inputDocumentLabel: "Thư mục mới",
       inputDocumentContent: "",
     };
@@ -54,8 +59,6 @@ export default {
     ...mapState("directory", ["checkedDirectory"]),
   },
 
-  async created() {},
-
   methods: {
     ...mapActions("document", [
       "createDocument",
@@ -63,17 +66,22 @@ export default {
       "setChecked",
     ]),
 
-    handleNodeClick(data) {},
+    handleNodeClick(data) {
+      this.isCreate = false;
+      this.isView = true;
+      this.setChecked(data);
+    },
 
     async onCreateDocument() {
-      this.isCreated = false;
+      this.isCreate = false;
+      this.isView = false;
 
       await this.createDocument({
         label: "Tài liệu mới",
         documentId: null,
         directoryId: this.checkedDirectory.id,
       }).then(async () => {
-        this.isCreated = true;
+        this.isCreate = true;
         await this.getFromDirectory(this.checkedDirectory.id);
       });
     },
@@ -91,21 +99,6 @@ export default {
 </script>
 
 <style scoped>
-.col1 {
-  height: 28px;
-  text-align: left;
-  line-height: 28px;
-}
-.container {
-  width: 60%;
-  margin: 0 auto;
-  padding: 50px 0;
-}
-.quill-editor {
-  min-height: 200px;
-  max-height: 400px;
-  overflow-y: auto;
-}
 .el-tree {
   background-color: transparent;
   width: 100%;
