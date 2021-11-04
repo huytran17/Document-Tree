@@ -13,6 +13,10 @@ export default {
         commit('getRootNodes')
     },
 
+    setChecked({ commit }, payload) {
+        commit('setChecked', payload)
+    },
+
     async getDirectoryTree({ commit, dispatch, state }) {
         await dispatch('fetchDirectories')
         commit('getRootNodes')

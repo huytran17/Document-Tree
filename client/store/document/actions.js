@@ -13,6 +13,15 @@ export default {
         commit('getRootNodes')
     },
 
+    async getDocumentTree({ commit, dispatch, state }, payload) {
+        commit('refreshDocuments', payload)
+        dispatch('getRootNodes')
+        dispatch('createDocumentTree', {
+            documentsTree: state.documentsTree,
+            documents: state.documents,
+        })
+    },
+
     createDocumentTree({ state, dispatch, commit }, payload) {
         if (payload.documentsTree.length === 0) return null;
 
@@ -35,7 +44,7 @@ export default {
         });
     },
 
-    async getFromDirectory({ commit, dispatch, state }, directoryId) {
+    async getFromDirectory({ dispatch }, directoryId) {
         await this.$axios
             .$get(`${CONFIG.BASE_URL}/api/directories/documents`, {
                 params: {
@@ -43,12 +52,16 @@ export default {
                 },
             })
             .then(async (res) => {
-                commit('refreshDocuments', res)
-                dispatch('getRootNodes')
-                dispatch('createDocumentTree', {
-                    documentsTree: state.documentsTree,
-                    documents: state.documents,
-                })
+                await dispatch('getDocumentTree', res)
             });
+    },
+
+    async createDocument({ dispatch }, payload) {
+        await this.$axios
+            .$post(`${CONFIG.BASE_URL}/api/documents/create`, {
+                label: payload.label || "Tài liệu mới",
+                documentId: payload.parentId,
+                directoryId: payload.directoryId
+            })
     }
 }

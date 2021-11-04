@@ -39,7 +39,7 @@
         </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogMkDirVisible = false">Hủy</el-button>
-          <el-button type="primary" @click="mkSubDirectory">Tạo</el-button>
+          <el-button type="primary" @click="makeSubDirectory">Tạo</el-button>
         </span>
       </el-dialog>
 
@@ -87,7 +87,6 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import { CONFIG } from "../../config/app";
 
 export default {
   name: "DirectoryDropdown",
@@ -139,14 +138,14 @@ export default {
         `Bạn có muốn tạo thư mục ${this.directoryLabel || "Thư mục mới"} không?`
       )
         .then((_) => {
-          this.mkSubDirectory();
+          this.makeSubDirectory();
 
           done();
         })
         .catch((_) => {});
     },
 
-    async mkSubDirectory() {
+    async makeSubDirectory() {
       await this.createSubDirectory({
         label: this.directoryLabel,
         parentId: this.data.id,

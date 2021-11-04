@@ -13,7 +13,7 @@
 <script>
 import Dropdown from "./Dropdown";
 import TreeNode from "./TreeNode";
-import { mapState, mapActions } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   name: "ListDirectory",
@@ -27,8 +27,10 @@ export default {
 
   methods: {
     ...mapActions("document", ["getFromDirectory"]),
+    ...mapActions("directory", ["setChecked"]),
 
     async handleNodeClick(data) {
+      this.setChecked(data);
       await this.getFromDirectory(data.id);
     },
 

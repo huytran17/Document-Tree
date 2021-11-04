@@ -51,13 +51,13 @@ module.exports = {
 
 		create: {
 			async handler(ctx) {
-				try {
-					const t = await db.transaction()
+				const t = await db.transaction()
 
-					const data = ctx.data
+				try {
+					const data = ctx.params
 
 					const doc = await Document.create(
-						{ data },
+						data,
 						{
 							transaction: t
 						})
@@ -78,8 +78,9 @@ module.exports = {
 			},
 
 			async handler(ctx) {
+				const t = await db.transaction()
+
 				try {
-					const t = await db.transaction()
 
 					const id = ctx.data.id
 
@@ -108,8 +109,9 @@ module.exports = {
 			},
 
 			async handler(ctx) {
+				const t = await db.transaction()
+
 				try {
-					const t = await db.transaction()
 
 					const id = ctx.data.id
 

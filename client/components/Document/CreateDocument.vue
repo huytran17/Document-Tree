@@ -19,10 +19,17 @@
       </el-col>
     </el-row>
     <el-row>
-     <el-input v-model="inputDocumentLabel" size="normal" clearable></el-input>
-     
+      <el-col :span="24"> <i class="el-icon-upload"></i> Nhấn để lưu </el-col>
+      <el-col :span="24">
+        <el-input
+          v-model="inputDocumentLabel"
+          size="normal"
+          clearable
+          autofocus
+        ></el-input>
+      </el-col>
     </el-row>
-    
+
     <el-row class="h-100">
       <client-only>
         <quill-editor
@@ -42,10 +49,10 @@
 export default {
   data() {
     return {
-      inputDocumentLabel: "",
+      inputDocumentLabel: "Tài liệu mới",
+      content: "",
       circleUrl:
         "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
-      content: "<p>I am Example</p>",
       editorOption: {
         // Some Quill options...
         theme: "snow",
@@ -104,8 +111,10 @@ export default {
   margin-right: 10px;
 }
 .quill-editor {
-  height: 100%;
-  min-height: 200px;
+  height: 400px;
   overflow-y: auto;
+}
+.el-input {
+  margin-bottom: 2rem;
 }
 </style>

@@ -1,10 +1,10 @@
 <template>
   <el-container class="h-100 w-100">
     <el-row style="width: 25%">
-      <el-col :span="24" class="col1" @click="createDocument">
+      <el-col :span="24" class="col1">
         <span class="mk mkdoc">
           <i class="el-icon-plus"></i>
-          <span>Tạo tài liệu</span>
+          <span @click="makeDocument">Tạo tài liệu</span>
         </span>
       </el-col>
       <el-col :span="24" class="col2">
@@ -19,7 +19,7 @@
     </el-row>
     <el-row class="w-100">
       <el-col :span="24">
-        <CreateDocument />
+        <CreateDocument v-if="isCreated" />
       </el-col>
     </el-row>
   </el-container>
@@ -28,7 +28,7 @@
 <script>
 import ListDocument from "./ListDocument";
 import CreateDocument from "./CreateDocument";
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "TabDocument",
@@ -37,20 +37,34 @@ export default {
     CreateDocument,
   },
 
+  data() {
+    return {
+      isCreated: false,
+    };
+  },
+
   computed: {
     ...mapState("document", ["documents", "documentsTree"]),
+    ...mapState("directory", ["checkedData"]),
   },
 
-  async created() {
-    console.log(this.documents);
-  },
+  async created() {},
 
   methods: {
-    createDocument() {
-      
-    },
+    ...mapActions("document", ["createDocument", "getFromDirectory"]),
 
-    handleNodeClick() {},
+    handleNodeClick(data) {},
+
+    async makeDocument() {
+      await this.createDocument({
+        label: "Tài liệu mới",
+        documentId: null,
+        directoryId: this.checkedData.id,
+      }).then(async () => {
+        this.isCreated = true;
+        await this.getFromDirectory(this.checkedData.id);
+      });
+    },
 
     renderContent(h, { node, data, store }) {
       return (

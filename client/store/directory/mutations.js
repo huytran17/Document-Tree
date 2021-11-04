@@ -25,6 +25,10 @@ export default {
     spliceDirectories(state, position) {
         state.directories.splice(position, 1)
     },
+
+    setChecked(state, payload) {
+        state.checkedData = payload
+    }
 }
 
 function refreshData(state) {
