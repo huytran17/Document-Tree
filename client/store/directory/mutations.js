@@ -27,7 +27,7 @@ export default {
     },
 
     setChecked(state, payload) {
-        state.checkedData = payload
+        state.checkedDirectory = payload
     }
 }
 

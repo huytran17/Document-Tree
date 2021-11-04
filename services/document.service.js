@@ -82,12 +82,10 @@ module.exports = {
 
 				try {
 
-					const id = ctx.data.id
+					const { id, label, content, directoryId } = ctx.params
 
-					const data = ctx.data
-
-					const doc = await Document.create(
-						{ data },
+					const doc = await Document.update(
+						{ label, content, directoryId },
 						{
 							where: { id },
 							transaction: t

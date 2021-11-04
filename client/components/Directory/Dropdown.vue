@@ -39,7 +39,7 @@
         </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogMkDirVisible = false">Hủy</el-button>
-          <el-button type="primary" @click="makeSubDirectory">Tạo</el-button>
+          <el-button type="primary" @click="onCreateSubDirectory">Tạo</el-button>
         </span>
       </el-dialog>
 
@@ -62,7 +62,7 @@
         </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogEditDirVisible = false">Hủy</el-button>
-          <el-button type="primary" @click="editDirectory">Lưu</el-button>
+          <el-button type="primary" @click="onUpdateDirectory">Lưu</el-button>
         </span>
       </el-dialog>
 
@@ -76,7 +76,7 @@
         <slot name="message">Bạn có muốn xóa thư mục này không?</slot>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogDeleteDirVisible = false"> Hủy </el-button>
-          <el-button type="primary" @click="deleteDirectory">
+          <el-button type="primary" @click="onRemoveDirectory">
             Đồng ý
           </el-button>
         </span>
@@ -145,21 +145,21 @@ export default {
         .catch((_) => {});
     },
 
-    async makeSubDirectory() {
+    async onCreateSubDirectory() {
       await this.createSubDirectory({
         label: this.directoryLabel,
         parentId: this.data.id,
       });
     },
 
-    async editDirectory() {
+    async onUpdateDirectory() {
       await this.updateDirectory({
         label: this.directoryLabel,
         id: this.data.id,
       });
     },
 
-    async deleteDirectory() {
+    async onRemoveDirectory() {
       await this.removeDirectory({ id: this.data.id });
     },
 

@@ -13,6 +13,10 @@ export default {
         commit('getRootNodes')
     },
 
+    setChecked({ commit }, payload) {
+        commit('setChecked', payload)
+    },
+
     async getDocumentTree({ commit, dispatch, state }, payload) {
         commit('refreshDocuments', payload)
         dispatch('getRootNodes')
@@ -62,6 +66,28 @@ export default {
                 label: payload.label || "Tài liệu mới",
                 documentId: payload.parentId,
                 directoryId: payload.directoryId
+            }).then(res => {
+                dispatch('setChecked', res.data)
             })
+    }
+    ,
+    async updateDocument({ dispatch }, payload) {
+        await this.$axios
+            .$post(
+                `${CONFIG.BASE_URL}/api/documents/update`,
+                {
+                    label: payload.label || "Thư mục mới",
+                    content: payload.content,
+                    directoryId: payload.directoryId
+                },
+                {
+                    params: {
+                        id: payload.id,
+                    },
+                }
+            )
+            .then(async (res) => {
+                // await dispatch('getDocumentTree', res)
+            });
     }
 }

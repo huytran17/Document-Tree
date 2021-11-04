@@ -1,5 +1,5 @@
 export default () => ({
     directories: [],
     directoriesTree: [],
-    checkedData: null,
+    checkedDirectory: null,
 })

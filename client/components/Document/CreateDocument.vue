@@ -19,14 +19,13 @@
       </el-col>
     </el-row>
     <el-row>
-      <el-col :span="24"> <i class="el-icon-upload"></i> Nhấn để lưu </el-col>
       <el-col :span="24">
-        <el-input
-          v-model="inputDocumentLabel"
-          size="normal"
-          clearable
-          autofocus
-        ></el-input>
+        <span @click="onUpdateDocument" style="cursor: pointer"
+          ><i class="el-icon-upload"></i> Nhấn để lưu</span
+        >
+      </el-col>
+      <el-col :span="24">
+        <el-input v-model="label" size="normal" clearable autofocus></el-input>
       </el-col>
     </el-row>
 
@@ -46,11 +45,20 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
+
 export default {
+  props: ["inputDocumentLabel", "inputDocumentContent"],
+
+  computed: {
+    ...mapState("document", ["checkedDocument"]),
+    ...mapState("directory", ["checkedDirectory"]),
+  },
+
   data() {
     return {
-      inputDocumentLabel: "Tài liệu mới",
-      content: "",
+      label: this.inputDocumentLabel,
+      content: this.inputDocumentContent,
       circleUrl:
         "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
       editorOption: {
@@ -68,13 +76,22 @@ export default {
 
   mounted() {
     console.log("App inited, the Quill instance object is:", this.$refs.editor);
-
-    setTimeout(() => {
-      this.content = "I was changed!";
-    }, 3000);
   },
 
   methods: {
+    ...mapActions("document", ["updateDocument", "getFromDirectory"]),
+
+    async onUpdateDocument() {
+      await this.updateDocument({
+        id: this.checkedDocument.id,
+        label: this.label,
+        content: this.content,
+        directoryId: this.checkedDirectory.id,
+      }).then(async () => {
+        await this.getFromDirectory(this.checkedDirectory.id);
+      });
+    },
+
     onEditorBlur(editor) {
       console.log("editor blur!", editor);
     },

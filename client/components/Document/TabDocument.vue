@@ -4,7 +4,7 @@
       <el-col :span="24" class="col1">
         <span class="mk mkdoc">
           <i class="el-icon-plus"></i>
-          <span @click="makeDocument">Tạo tài liệu</span>
+          <span @click="onCreateDocument">Tạo tài liệu</span>
         </span>
       </el-col>
       <el-col :span="24" class="col2">
@@ -19,7 +19,11 @@
     </el-row>
     <el-row class="w-100">
       <el-col :span="24">
-        <CreateDocument v-if="isCreated" />
+        <CreateDocument
+          v-if="isCreated"
+          :inputDocumentLabel="inputDocumentLabel"
+          :inputDocumentContent="inputDocumentContent"
+        />
       </el-col>
     </el-row>
   </el-container>
@@ -40,29 +44,37 @@ export default {
   data() {
     return {
       isCreated: false,
+      inputDocumentLabel: "Thư mục mới",
+      inputDocumentContent: "",
     };
   },
 
   computed: {
     ...mapState("document", ["documents", "documentsTree"]),
-    ...mapState("directory", ["checkedData"]),
+    ...mapState("directory", ["checkedDirectory"]),
   },
 
   async created() {},
 
   methods: {
-    ...mapActions("document", ["createDocument", "getFromDirectory"]),
+    ...mapActions("document", [
+      "createDocument",
+      "getFromDirectory",
+      "setChecked",
+    ]),
 
     handleNodeClick(data) {},
 
-    async makeDocument() {
+    async onCreateDocument() {
+      this.isCreated = false;
+
       await this.createDocument({
         label: "Tài liệu mới",
         documentId: null,
-        directoryId: this.checkedData.id,
+        directoryId: this.checkedDirectory.id,
       }).then(async () => {
         this.isCreated = true;
-        await this.getFromDirectory(this.checkedData.id);
+        await this.getFromDirectory(this.checkedDirectory.id);
       });
     },
 

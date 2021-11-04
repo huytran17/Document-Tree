@@ -25,6 +25,10 @@ export default {
     spliceDocuments(state, position) {
         state.documents.splice(position, 1)
     },
+
+    setChecked(state, payload) {
+        state.checkedDocument = payload
+    }
 }
 
 function refreshData(state) {

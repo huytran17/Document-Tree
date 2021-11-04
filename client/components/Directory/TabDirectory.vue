@@ -32,7 +32,7 @@
       <slot name="message">Bạn có muốn tạo thư mục này không?</slot>
       <span slot="footer" class="dialog-footer">
         <el-button @click="refreshData"> Hủy </el-button>
-        <el-button type="primary" @click="makeDirectory"> Đồng ý </el-button>
+        <el-button type="primary" @click="onCreateDirectory"> Đồng ý </el-button>
       </span>
     </el-dialog>
   </el-container>
@@ -72,7 +72,7 @@ export default {
       "createDirectory",
     ]),
 
-    async makeDirectory() {
+    async onCreateDirectory() {
       await this.createDirectory({ label: this.inputDirectoryLabel });
 
       this.refreshData();
