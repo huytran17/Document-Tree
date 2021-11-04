@@ -14,13 +14,11 @@
 <script>
 import TabDirectory from "../Directory/TabDirectory";
 import TabDocument from "../Document/TabDocument";
-import TabContent from "../Content/TabContent";
 
 export default {
   name: "Content",
   components: {
     TabDirectory,
-    TabContent,
     TabDocument,
   },
 };

@@ -18,6 +18,11 @@
         <p>Trần Văn Huy</p>
       </el-col>
     </el-row>
+    <el-row>
+     <el-input v-model="inputDocumentLabel" size="normal" clearable></el-input>
+     
+    </el-row>
+    
     <el-row class="h-100">
       <client-only>
         <quill-editor
@@ -37,6 +42,7 @@
 export default {
   data() {
     return {
+      inputDocumentLabel: "",
       circleUrl:
         "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
       content: "<p>I am Example</p>",

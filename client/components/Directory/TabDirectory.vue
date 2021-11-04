@@ -32,7 +32,7 @@
       <slot name="message">Bạn có muốn tạo thư mục này không?</slot>
       <span slot="footer" class="dialog-footer">
         <el-button @click="refreshData"> Hủy </el-button>
-        <el-button type="primary" @click="createDir"> Đồng ý </el-button>
+        <el-button type="primary" @click="mkDirectory"> Đồng ý </el-button>
       </span>
     </el-dialog>
   </el-container>
@@ -40,7 +40,6 @@
 
 <script>
 import ListDirectory from "./ListDirectory";
-import { CONFIG } from "../../config/app";
 import { mapActions, mapState } from "vuex";
 
 export default {
@@ -70,18 +69,13 @@ export default {
       "fetchDirectories",
       "getRootNodes",
       "createDirectoryTree",
+      "createDirectory",
     ]),
 
-    async createDir() {
-      await this.$axios
-        .$post(`${CONFIG.BASE_URL}/api/directories/create`, {
-          label: this.inputDirectoryLabel || "Thư mục mới",
-        })
-        .then(async () => {
-          this.refreshData();
+    async mkDirectory() {
+      await this.createDirectory({ label: this.inputDirectoryLabel });
 
-          this.getDirectoryTree();
-        });
+      this.refreshData();
     },
 
     refreshData() {

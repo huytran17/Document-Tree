@@ -33,5 +33,76 @@ export default {
                     directories: state.directories
                 });
         });
+    },
+
+    async createDirectory({ commit, state, dispatch }, payload) {
+        await this.$axios
+            .$post(`${CONFIG.BASE_URL}/api/directories/create`, {
+                label: payload.label || "Thư mục mới",
+            })
+            .then(async () => {
+                await dispatch('fetchDirectories')
+                commit('getRootNodes')
+                dispatch('createDirectoryTree', {
+                    directoriesTree: state.directoriesTree,
+                    directories: state.directories
+                })
+            });
+    },
+
+    async createSubDirectory({ commit, state, dispatch }, payload) {
+        await this.$axios
+            .$post(`${CONFIG.BASE_URL}/api/directories/create`, {
+                label: payload.label || "Thư mục mới",
+                directoryId: payload.parentId,
+            })
+            .then(async () => {
+                await dispatch('fetchDirectories')
+                commit('getRootNodes')
+                dispatch('createDirectoryTree', {
+                    directoriesTree: state.directoriesTree,
+                    directories: state.directories
+                })
+            });
+    }
+    ,
+    async updateDirectory({ commit, state, dispatch }, payload) {
+        await this.$axios
+            .$post(
+                `${CONFIG.BASE_URL}/api/directories/update`,
+                {
+                    label: payload.label || "Thư mục mới",
+                },
+                {
+                    params: {
+                        id: payload.id,
+                    },
+                }
+            )
+            .then(async () => {
+                await dispatch('fetchDirectories')
+                commit('getRootNodes')
+                dispatch('createDirectoryTree', {
+                    directoriesTree: state.directoriesTree,
+                    directories: state.directories
+                })
+            });
+    },
+
+    async removeDirectory({ commit, state, dispatch }, payload) {
+        await this.$axios
+            .$post(`${CONFIG.BASE_URL}/api/directories/remove`, null, {
+                params: {
+                    id: payload.id,
+                },
+            })
+            .then(async () => {
+                await dispatch('fetchDirectories')
+                commit('getRootNodes')
+                dispatch('createDirectoryTree', {
+                    directoriesTree: state.directoriesTree,
+                    directories: state.directories
+                })
+            });
     }
 }

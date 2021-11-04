@@ -39,7 +39,7 @@
         </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogMkDirVisible = false">Hủy</el-button>
-          <el-button type="primary" @click="createSubDirectory">Tạo</el-button>
+          <el-button type="primary" @click="mkSubDirectory">Tạo</el-button>
         </span>
       </el-dialog>
 
@@ -113,6 +113,9 @@ export default {
       "fetchDirectories",
       "getRootNodes",
       "createDirectoryTree",
+      "createSubDirectory",
+      "updateDirectory",
+      "removeDirectory",
     ]),
 
     handleCommand(command) {
@@ -136,52 +139,29 @@ export default {
         `Bạn có muốn tạo thư mục ${this.directoryLabel || "Thư mục mới"} không?`
       )
         .then((_) => {
-          this.createSubDirectory();
+          this.mkSubDirectory();
 
           done();
         })
         .catch((_) => {});
     },
 
-    async createSubDirectory() {
-      await this.$axios
-        .$post(`${CONFIG.BASE_URL}/api/directories/create`, {
-          label: this.directoryLabel || "Thư mục mới",
-          directoryId: this.data.id,
-        })
-        .then(async () => {
-          await this.getDirectoryTree();
-        });
+    async mkSubDirectory() {
+      await this.createSubDirectory({
+        label: this.directoryLabel,
+        parentId: this.data.id,
+      });
     },
 
     async editDirectory() {
-      await this.$axios
-        .$post(
-          `${CONFIG.BASE_URL}/api/directories/update`,
-          {
-            label: this.directoryLabel || "Thư mục mới",
-          },
-          {
-            params: {
-              id: this.data.id,
-            },
-          }
-        )
-        .then(async () => {
-          await this.getDirectoryTree();
-        });
+      await this.updateDirectory({
+        label: this.directoryLabel,
+        id: this.data.id,
+      });
     },
 
     async deleteDirectory() {
-      await this.$axios
-        .$post(`${CONFIG.BASE_URL}/api/directories/remove`, null, {
-          params: {
-            id: this.data.id,
-          },
-        })
-        .then(async () => {
-          await this.getDirectoryTree();
-        });
+      await this.removeDirectory({ id: this.data.id });
     },
 
     async getDirectoryTree() {

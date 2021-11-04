@@ -8,7 +8,13 @@
         </span>
       </el-col>
       <el-col :span="24" class="col2">
-        <ListDocument :data="documentsTree"></ListDocument>
+        <el-tree
+          :data="documentsTree"
+          :highlight-current="true"
+          node-key="id"
+          :render-content="renderContent"
+          @node-click="handleNodeClick"
+        ></el-tree>
       </el-col>
     </el-row>
     <el-row class="w-100">
@@ -40,7 +46,20 @@ export default {
   },
 
   methods: {
-    createDocument() {},
+    createDocument() {
+      
+    },
+
+    handleNodeClick() {},
+
+    renderContent(h, { node, data, store }) {
+      return (
+        <div class="custom-tree-node">
+          <i class="el-icon-document" style="color: #328de0"></i>
+          <span style="margin-left:5px;">{node.label}</span>
+        </div>
+      );
+    },
   },
 };
 </script>
@@ -60,5 +79,9 @@ export default {
   min-height: 200px;
   max-height: 400px;
   overflow-y: auto;
+}
+.el-tree {
+  background-color: transparent;
+  width: 100%;
 }
 </style>
