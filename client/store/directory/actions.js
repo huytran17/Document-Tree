@@ -13,6 +13,15 @@ export default {
         commit('getRootNodes')
     },
 
+    async getDirectoryTree({ commit, dispatch, state }) {
+        await dispatch('fetchDirectories')
+        commit('getRootNodes')
+        dispatch('createDirectoryTree', {
+            directoriesTree: state.directoriesTree,
+            directories: state.directories
+        })
+    },
+
     createDirectoryTree({ state, dispatch, commit }, payload) {
         if (payload.directoriesTree.length === 0) return null;
 
@@ -41,12 +50,7 @@ export default {
                 label: payload.label || "Thư mục mới",
             })
             .then(async () => {
-                await dispatch('fetchDirectories')
-                commit('getRootNodes')
-                dispatch('createDirectoryTree', {
-                    directoriesTree: state.directoriesTree,
-                    directories: state.directories
-                })
+                await dispatch('getDirectoryTree')
             });
     },
 
@@ -57,12 +61,7 @@ export default {
                 directoryId: payload.parentId,
             })
             .then(async () => {
-                await dispatch('fetchDirectories')
-                commit('getRootNodes')
-                dispatch('createDirectoryTree', {
-                    directoriesTree: state.directoriesTree,
-                    directories: state.directories
-                })
+                await dispatch('getDirectoryTree')
             });
     }
     ,
@@ -80,12 +79,7 @@ export default {
                 }
             )
             .then(async () => {
-                await dispatch('fetchDirectories')
-                commit('getRootNodes')
-                dispatch('createDirectoryTree', {
-                    directoriesTree: state.directoriesTree,
-                    directories: state.directories
-                })
+                await dispatch('getDirectoryTree')
             });
     },
 
@@ -97,12 +91,7 @@ export default {
                 },
             })
             .then(async () => {
-                await dispatch('fetchDirectories')
-                commit('getRootNodes')
-                dispatch('createDirectoryTree', {
-                    directoriesTree: state.directoriesTree,
-                    directories: state.directories
-                })
+                await dispatch('getDirectoryTree')
             });
     }
 }
