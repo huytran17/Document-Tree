@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState } from "vuex";
 import TabViewDocument from "./TabViewDocument";
 
 export default {

@@ -76,7 +76,7 @@ export default {
             .$post(
                 `${CONFIG.BASE_URL}/api/documents/update`,
                 {
-                    label: payload.label || "Thư mục mới",
+                    label: payload.label || "Tài liệu mới",
                     content: payload.content,
                     directoryId: payload.directoryId
                 },

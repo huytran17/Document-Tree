@@ -50,7 +50,7 @@ export default {
         modules: {
           toolbar: [
             ["bold", "italic", "underline", "strike"],
-            ["blockquote", "code-block"],
+            ["blockquote", "code-block", "link", "image"],
           ],
         },
       },

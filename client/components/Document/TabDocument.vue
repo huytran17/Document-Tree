@@ -49,7 +49,7 @@ export default {
     return {
       isCreate: false,
       isView: false,
-      inputDocumentLabel: "Thư mục mới",
+      inputDocumentLabel: "Tài liệu mới",
       inputDocumentContent: "",
     };
   },
